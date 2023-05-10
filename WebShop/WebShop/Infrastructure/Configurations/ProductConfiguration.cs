@@ -14,6 +14,7 @@ namespace WebShop.Infrastructure.Configurations
             modelBuilder.Property(x => x.Price).IsRequired();
             modelBuilder.Property(x => x.Amount).IsRequired();
             modelBuilder.Property(x => x.Description).HasMaxLength(200);
+            modelBuilder.Property(x => x.IsDeleted).HasDefaultValue(false);
         }
     }
 }

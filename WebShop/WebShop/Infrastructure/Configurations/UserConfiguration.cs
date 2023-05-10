@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.IdentityModel.Logging;
 using WebShop.Enums;
 using WebShop.Models;
 
@@ -12,7 +13,6 @@ namespace WebShop.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<User> modelBuilder)
         {
             modelBuilder.HasKey(x => x.Id);
-            modelBuilder.Property(x => x.Id).ValueGeneratedOnAdd();
             modelBuilder.Property(x => x.Username).HasMaxLength(20).IsRequired();
             modelBuilder.HasIndex(x => x.Username).IsUnique();
             modelBuilder.Property(x => x.Email).HasMaxLength(30).IsRequired();
@@ -22,6 +22,7 @@ namespace WebShop.Infrastructure.Configurations
             modelBuilder.Property(x => x.Address).HasMaxLength(40).IsRequired();
             modelBuilder.Property(x => x.UserType).HasConversion(new EnumToStringConverter<UserType>()).IsRequired(); //Cuva u BP string umesto broja
             modelBuilder.Property(x => x.BirthDate).IsRequired();
+            modelBuilder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
             modelBuilder.HasData(new User
             {

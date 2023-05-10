@@ -10,6 +10,7 @@ namespace WebShop.Infrastructure.Configurations
         {
             modelBuilder.HasKey(x => x.Id);
             modelBuilder.HasOne(x => x.Order).WithMany(x => x.Items).HasForeignKey(x => x.OrderId);
+            modelBuilder.Property(x => x.IsDeleted).HasDefaultValue(false);
         }
     }
 }

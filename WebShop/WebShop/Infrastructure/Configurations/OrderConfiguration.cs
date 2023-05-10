@@ -12,6 +12,7 @@ namespace WebShop.Infrastructure.Configurations
             modelBuilder.Property(x => x.DeliveryAddress).IsRequired();
             modelBuilder.Property(x => x.DeliveryTime).IsRequired();
             modelBuilder.Property(x => x.Comment).HasMaxLength(100);
+            modelBuilder.Property(x => x.IsDeleted).HasDefaultValue(false);
         }
     }
 }
