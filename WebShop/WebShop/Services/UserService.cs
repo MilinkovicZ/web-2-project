@@ -15,7 +15,7 @@ namespace WebShop.Services
         {
             var users = await unitOfWork.UsersRepository.GetAllAsync();
             User? user = users.FirstOrDefault(u => u.Email == email && u.Password == password);
-            if(user == null)
+            if (user == null)
             {
                 throw new NotFoundException($"User with email: {email} and password: {password} could not be found.");
             }
