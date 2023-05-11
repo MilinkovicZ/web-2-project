@@ -6,6 +6,7 @@ using WebShop.Context;
 using WebShop.Exceptions;
 using WebShop.Interfaces;
 using WebShop.Repository;
+using WebShop.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<DbContext, WebShopDBContext>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ExceptionMiddleware>();
 
 builder.Services.AddAuthentication(options =>
 {
