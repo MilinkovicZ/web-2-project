@@ -12,7 +12,7 @@ using WebShop.Context;
 namespace WebShop.Migrations
 {
     [DbContext(typeof(WebShopDBContext))]
-    [Migration("20230510112327_initialMigration")]
+    [Migration("20230514132214_initialMigration")]
     partial class initialMigration
     {
         /// <inheritdoc />
@@ -160,8 +160,8 @@ namespace WebShop.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("UserType")
                         .IsRequired()
@@ -191,7 +191,7 @@ namespace WebShop.Migrations
                             Email = "john@example.com",
                             FullName = "John Smith",
                             IsDeleted = false,
-                            Password = "password123",
+                            Password = "$2a$11$xCUBKE3qtz1b2umxUas9Fu9F.MCH2ZxEILeEcg74GYgOBYUjkMYDi",
                             UserType = "Admin",
                             Username = "john123"
                         });

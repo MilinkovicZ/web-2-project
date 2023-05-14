@@ -18,7 +18,7 @@ namespace WebShop.Infrastructure.Configurations
             modelBuilder.Property(x => x.Email).HasMaxLength(30).IsRequired();
             modelBuilder.HasIndex(x => x.Email).IsUnique();
             modelBuilder.Property(x => x.FullName).HasMaxLength(30).IsRequired();
-            modelBuilder.Property(x => x.Password).HasMaxLength(30).IsRequired();
+            modelBuilder.Property(x => x.Password).HasMaxLength(300).IsRequired();
             modelBuilder.Property(x => x.Address).HasMaxLength(40).IsRequired();
             modelBuilder.Property(x => x.UserType).HasConversion(new EnumToStringConverter<UserType>()).IsRequired(); //Cuva u BP string umesto broja
             modelBuilder.Property(x => x.BirthDate).IsRequired();
@@ -30,11 +30,11 @@ namespace WebShop.Infrastructure.Configurations
                 Username = "john123",
                 Email = "john@example.com",
                 FullName = "John Smith",
-                Password = "password123",
+                Password = BCrypt.Net.BCrypt.HashPassword("password123"),
                 Address = "123 Main St, Anytown USA",
                 UserType = UserType.Admin,
                 BirthDate = new DateTime(1990, 1, 1)
-            });
+            }); ; ;
         }
     }
 }

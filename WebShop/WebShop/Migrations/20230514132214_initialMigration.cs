@@ -53,7 +53,7 @@ namespace WebShop.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
@@ -97,7 +97,7 @@ namespace WebShop.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Address", "BirthDate", "Email", "FullName", "Image", "Password", "UserType", "Username" },
-                values: new object[] { 1, "123 Main St, Anytown USA", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "john@example.com", "John Smith", null, "password123", "Admin", "john123" });
+                values: new object[] { 1, "123 Main St, Anytown USA", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "john@example.com", "John Smith", null, "$2a$11$xCUBKE3qtz1b2umxUas9Fu9F.MCH2ZxEILeEcg74GYgOBYUjkMYDi", "Admin", "john123" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Item_OrderId",

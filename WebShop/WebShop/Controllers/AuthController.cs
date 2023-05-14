@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using WebShop.DTO;
+using WebShop.Exceptions;
 using WebShop.Interfaces;
 using WebShop.Models;
 
@@ -15,41 +16,33 @@ namespace WebShop.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUserService userService;
-        private readonly IConfiguration configuration;
-        public AuthController(IUserService userService, IConfiguration configuration)
+        private readonly IAuthService _authService;
+        public AuthController(IAuthService authService)
         {
-            this.userService = userService;
-            this.configuration = configuration;
-
+            _authService = authService;
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<ActionResult<string>> Login(UserLoginDTO userLoginDTO)
+        public async Task<IActionResult> Login(UserLoginDTO userLoginDTO)
         {
-            User loggedUser = await userService.GetUser(userLoginDTO.Email, userLoginDTO.Password);
+            string token = await _authService.Login(userLoginDTO);
+            return Ok(new { token = token });
+        }
 
-            var claims = new[] 
-            {
-                        new Claim(JwtRegisteredClaimNames.Sub, configuration["Jwt:Subject"] ?? "defaultdefault11"),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                        new Claim("UserId", loggedUser.Id.ToString()),
-                        new Claim("Email", loggedUser.Email),
-                        new Claim("UserType", loggedUser.UserType.ToString())
-            };
+        [HttpPost("Register")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(UserRegisterDTO userRegisterDTO)
+        {
+            await _authService.Register(userRegisterDTO);
+            return Ok();
+        }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"] ?? "defaultdefault11"));
-            var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var token = new JwtSecurityToken(
-                configuration["Jwt:Issuer"], 
-                configuration["Jwt:Audience"],
-                claims,
-                expires: DateTime.UtcNow.AddDays(1),
-                signingCredentials: signIn);
-
-            return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Logout()
+        {
+            return Ok();
         }
     }
 }

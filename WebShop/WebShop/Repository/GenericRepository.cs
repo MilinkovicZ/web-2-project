@@ -5,11 +5,11 @@ namespace WebShop.Interfaces
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : EntityBase
     {
-        private readonly DbContext dbContext;
+        private readonly DbContext _dbContext;
         private DbSet<T> entities;
         public GenericRepository(DbContext dbContext)
         {
-            this.dbContext = dbContext;
+            _dbContext = dbContext;
             entities = dbContext.Set<T>();
         }
         public async Task<IEnumerable<T>> GetAllAsync()

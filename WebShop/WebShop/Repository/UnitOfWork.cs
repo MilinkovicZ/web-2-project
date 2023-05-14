@@ -6,7 +6,7 @@ namespace WebShop.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DbContext dbContext;
+        private readonly DbContext _dbContext;
         public IGenericRepository<User> UsersRepository { get; }
         public IGenericRepository<Product> ProductsRepository { get; }
         public IGenericRepository<Item> ItemsRepository { get; }
@@ -15,7 +15,7 @@ namespace WebShop.Repository
         public UnitOfWork(DbContext dbContext, IGenericRepository<User> userRepository, IGenericRepository<Product> productRepository,
             IGenericRepository<Item> itemRepository, IGenericRepository<Order> orderRepository)
         {
-            this.dbContext = dbContext;
+            _dbContext = dbContext;
             UsersRepository = userRepository;
             ProductsRepository = productRepository;
             ItemsRepository = itemRepository;
@@ -24,7 +24,7 @@ namespace WebShop.Repository
 
         public async Task Save()
         {
-            await dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
         public void Dispose()
@@ -37,7 +37,7 @@ namespace WebShop.Repository
         {
             if (disposing)
             {
-                dbContext.Dispose();
+                _dbContext.Dispose();
             }
         }
     }
