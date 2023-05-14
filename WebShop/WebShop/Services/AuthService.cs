@@ -62,9 +62,14 @@ namespace WebShop.Services
         public async Task Register(UserRegisterDTO userRegisterDTO)
         {
             var users = await _unitOfWork.UsersRepository.GetAllAsync();
-            User? existingUser = users.FirstOrDefault(u => u.Email == userRegisterDTO.Email);
-            if (existingUser != null)
+
+            var existingEmail = users.FirstOrDefault(u => u.Email == userRegisterDTO.Email);
+            if (existingEmail != null)
                 throw new BadRequestException("User with this email is already registered");
+
+            var existingUsername = users.FirstOrDefault(u => u.Username == userRegisterDTO.Username);
+            if (existingEmail != null)
+                throw new BadRequestException("User with this username is already registered");
 
             userRegisterDTO.Password = BCrypt.Net.BCrypt.HashPassword(userRegisterDTO.Password);
 
