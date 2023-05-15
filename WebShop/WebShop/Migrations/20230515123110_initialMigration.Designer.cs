@@ -12,7 +12,7 @@ using WebShop.Context;
 namespace WebShop.Migrations
 {
     [DbContext(typeof(WebShopDBContext))]
-    [Migration("20230514132214_initialMigration")]
+    [Migration("20230515123110_initialMigration")]
     partial class initialMigration
     {
         /// <inheritdoc />
@@ -79,6 +79,12 @@ namespace WebShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
+
+                    b.Property<string>("OrderState")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("Preparing");
 
                     b.HasKey("Id");
 
@@ -172,6 +178,10 @@ namespace WebShop.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("VerificationState")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
@@ -191,9 +201,10 @@ namespace WebShop.Migrations
                             Email = "john@example.com",
                             FullName = "John Smith",
                             IsDeleted = false,
-                            Password = "$2a$11$xCUBKE3qtz1b2umxUas9Fu9F.MCH2ZxEILeEcg74GYgOBYUjkMYDi",
+                            Password = "$2a$11$5rx9YUrkcSJ0hQzKvDs5Ru3b6Y.Ec3tVg2K8xUFK9WpUIBAceHk8K",
                             UserType = "Admin",
-                            Username = "john123"
+                            Username = "john123",
+                            VerificationState = "Accepted"
                         });
                 });
 

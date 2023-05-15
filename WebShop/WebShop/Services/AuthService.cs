@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using WebShop.DTO;
+using WebShop.Enums;
 using WebShop.Exceptions;
 using WebShop.Interfaces;
 using WebShop.Models;
@@ -37,12 +39,19 @@ namespace WebShop.Services
         public async Task<string> Login(UserLoginDTO userLoginDTO)
         {
             User loggedUser = await GetUser(userLoginDTO.Email, userLoginDTO.Password);
-            
-            var claims = new[]
+
+            if (loggedUser.UserType == UserType.Seller)
             {
-                        new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"] ?? "defaultdefault11"),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+                if (loggedUser.VerificationState == VerificationState.Denied)
+                    throw new BadRequestException("You are denied by administrator as a seller!");
+                else if (loggedUser.VerificationState == VerificationState.Waiting)
+                    throw new BadRequestException("You are still not accepted by administator. Please wait!");
+            }
+
+            var claims = new[]
+            {                        
+                        new Claim(ClaimTypes.Name, loggedUser.Username),
+                        new Claim(ClaimTypes.Role, loggedUser.UserType.ToString()),
                         new Claim("UserId", loggedUser.Id.ToString()),
                         new Claim("Email", loggedUser.Email),
                         new Claim("UserType", loggedUser.UserType.ToString())
@@ -74,11 +83,18 @@ namespace WebShop.Services
             userRegisterDTO.Password = BCrypt.Net.BCrypt.HashPassword(userRegisterDTO.Password);
 
             var newUser = _mapper.Map<User>(userRegisterDTO);
+
+            if (newUser.UserType == UserType.Admin)
+                throw new BadRequestException("Admin can't be registered!");
+            else if (newUser.UserType == UserType.Seller)
+                newUser.VerificationState = VerificationState.Waiting;
+            else
+                newUser.VerificationState = VerificationState.Accepted;
+
             await _unitOfWork.UsersRepository.Insert(newUser);
             await _unitOfWork.Save();
         }
-
-        public void Logout()
+        public Task RegisterViaGoogle(UserRegisterDTO userRegisterDTO)
         {
             throw new NotImplementedException();
         }

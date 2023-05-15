@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using WebShop.Models;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using WebShop.Enums;
 
 namespace WebShop.Infrastructure.Configurations
 {
@@ -13,6 +15,7 @@ namespace WebShop.Infrastructure.Configurations
             modelBuilder.Property(x => x.DeliveryTime).IsRequired();
             modelBuilder.Property(x => x.Comment).HasMaxLength(100);
             modelBuilder.Property(x => x.IsDeleted).HasDefaultValue(false);
+            modelBuilder.Property(x => x.OrderState).HasConversion(new EnumToStringConverter<OrderState>()).IsRequired().HasDefaultValue(OrderState.Preparing);
         }
     }
 }

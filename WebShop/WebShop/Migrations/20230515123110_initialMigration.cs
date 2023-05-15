@@ -19,6 +19,7 @@ namespace WebShop.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DeliveryAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DeliveryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OrderState = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Preparing"),
                     Comment = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
@@ -58,6 +59,7 @@ namespace WebShop.Migrations
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     UserType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VerificationState = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
@@ -96,8 +98,8 @@ namespace WebShop.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Address", "BirthDate", "Email", "FullName", "Image", "Password", "UserType", "Username" },
-                values: new object[] { 1, "123 Main St, Anytown USA", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "john@example.com", "John Smith", null, "$2a$11$xCUBKE3qtz1b2umxUas9Fu9F.MCH2ZxEILeEcg74GYgOBYUjkMYDi", "Admin", "john123" });
+                columns: new[] { "Id", "Address", "BirthDate", "Email", "FullName", "Image", "Password", "UserType", "Username", "VerificationState" },
+                values: new object[] { 1, "123 Main St, Anytown USA", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "john@example.com", "John Smith", null, "$2a$11$5rx9YUrkcSJ0hQzKvDs5Ru3b6Y.Ec3tVg2K8xUFK9WpUIBAceHk8K", "Admin", "john123", "Accepted" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Item_OrderId",

@@ -21,6 +21,7 @@ namespace WebShop.Infrastructure.Configurations
             modelBuilder.Property(x => x.Password).HasMaxLength(300).IsRequired();
             modelBuilder.Property(x => x.Address).HasMaxLength(40).IsRequired();
             modelBuilder.Property(x => x.UserType).HasConversion(new EnumToStringConverter<UserType>()).IsRequired(); //Cuva u BP string umesto broja
+            modelBuilder.Property(x => x.VerificationState).HasConversion(new EnumToStringConverter<VerificationState>()).IsRequired();
             modelBuilder.Property(x => x.BirthDate).IsRequired();
             modelBuilder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
@@ -33,8 +34,9 @@ namespace WebShop.Infrastructure.Configurations
                 Password = BCrypt.Net.BCrypt.HashPassword("password123"),
                 Address = "123 Main St, Anytown USA",
                 UserType = UserType.Admin,
+                VerificationState = VerificationState.Accepted,
                 BirthDate = new DateTime(1990, 1, 1)
-            }); ; ;
+            });
         }
     }
 }

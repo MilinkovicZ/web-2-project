@@ -19,6 +19,8 @@ namespace WebShop.Models
         public string Address { get; set; } = null!;
         [Required]
         public UserType UserType { get; set; }
+        [Required]
+        public VerificationState VerificationState { get; set; }
         public byte[]? Image { get; set; }
     }
 }

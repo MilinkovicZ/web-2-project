@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebShop.Enums;
 
 namespace WebShop.Models
 {
@@ -9,6 +10,8 @@ namespace WebShop.Models
         public string DeliveryAddress { get; set; } = null!;
         [Required]
         public DateTime DeliveryTime { get; set; }
+        [Required]
+        public OrderState OrderState { get; set; }
         public string? Comment { get; set; }
     }
 }

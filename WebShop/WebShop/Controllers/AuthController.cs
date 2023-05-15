@@ -38,10 +38,11 @@ namespace WebShop.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpPost("RegisterViaGoogle")]
         [AllowAnonymous]
-        public IActionResult Logout()
+        public async Task<IActionResult> RegisterViaGoogle(UserRegisterDTO userRegisterDTO)
         {
+            await _authService.RegisterViaGoogle(userRegisterDTO);
             return Ok();
         }
     }

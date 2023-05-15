@@ -24,6 +24,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<ExceptionMiddleware>();
 
 builder.Services.AddAuthentication(options =>
@@ -44,6 +45,10 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = false,
         ValidateIssuerSigningKey = true
     };
+}).AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
 }); 
 
 builder.Services.AddSwaggerGen(option =>
