@@ -12,8 +12,8 @@ using WebShop.Context;
 namespace WebShop.Migrations
 {
     [DbContext(typeof(WebShopDBContext))]
-    [Migration("20230515123110_initialMigration")]
-    partial class initialMigration
+    [Migration("20230516105535_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,6 +64,9 @@ namespace WebShop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BuyerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Comment")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -87,6 +90,8 @@ namespace WebShop.Migrations
                         .HasDefaultValue("Preparing");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BuyerId");
 
                     b.ToTable("Orders");
                 });
@@ -201,7 +206,7 @@ namespace WebShop.Migrations
                             Email = "john@example.com",
                             FullName = "John Smith",
                             IsDeleted = false,
-                            Password = "$2a$11$5rx9YUrkcSJ0hQzKvDs5Ru3b6Y.Ec3tVg2K8xUFK9WpUIBAceHk8K",
+                            Password = "$2a$11$ZXsER/z83fjIrj0THYkgF.OYi1XMPGbGvQBbRkTXN3UV9RYgXRjqi",
                             UserType = "Admin",
                             Username = "john123",
                             VerificationState = "Accepted"
@@ -229,7 +234,23 @@ namespace WebShop.Migrations
 
             modelBuilder.Entity("WebShop.Models.Order", b =>
                 {
+                    b.HasOne("WebShop.Models.User", "Buyer")
+                        .WithMany("Orders")
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Buyer");
+                });
+
+            modelBuilder.Entity("WebShop.Models.Order", b =>
+                {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("WebShop.Models.User", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

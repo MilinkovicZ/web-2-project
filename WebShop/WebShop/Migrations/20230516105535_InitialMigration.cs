@@ -6,28 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebShop.Migrations
 {
     /// <inheritdoc />
-    public partial class initialMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DeliveryAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DeliveryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OrderState = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Preparing"),
-                    Comment = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
@@ -69,6 +52,30 @@ namespace WebShop.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DeliveryAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DeliveryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OrderState = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Preparing"),
+                    Comment = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    BuyerId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_Users_BuyerId",
+                        column: x => x.BuyerId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Item",
                 columns: table => new
                 {
@@ -99,7 +106,7 @@ namespace WebShop.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Address", "BirthDate", "Email", "FullName", "Image", "Password", "UserType", "Username", "VerificationState" },
-                values: new object[] { 1, "123 Main St, Anytown USA", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "john@example.com", "John Smith", null, "$2a$11$5rx9YUrkcSJ0hQzKvDs5Ru3b6Y.Ec3tVg2K8xUFK9WpUIBAceHk8K", "Admin", "john123", "Accepted" });
+                values: new object[] { 1, "123 Main St, Anytown USA", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "john@example.com", "John Smith", null, "$2a$11$ZXsER/z83fjIrj0THYkgF.OYi1XMPGbGvQBbRkTXN3UV9RYgXRjqi", "Admin", "john123", "Accepted" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Item_OrderId",
@@ -110,6 +117,11 @@ namespace WebShop.Migrations
                 name: "IX_Item_ProductId",
                 table: "Item",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_BuyerId",
+                table: "Orders",
+                column: "BuyerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_Name",
@@ -137,13 +149,13 @@ namespace WebShop.Migrations
                 name: "Item");
 
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

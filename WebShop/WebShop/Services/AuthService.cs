@@ -17,11 +17,13 @@ namespace WebShop.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
-        public AuthService(IUnitOfWork unitOfWork, IConfiguration configuration, IMapper mapper)
+        private readonly IMailService _mailService;
+        public AuthService(IUnitOfWork unitOfWork, IConfiguration configuration, IMapper mapper, IMailService mailService)
         {
             _unitOfWork = unitOfWork;
             _configuration = configuration;
             _mapper = mapper;
+            _mailService = mailService;
         }
 
         private async Task<User> GetUser(string email, string password)
@@ -87,7 +89,10 @@ namespace WebShop.Services
             if (newUser.UserType == UserType.Admin)
                 throw new BadRequestException("Admin can't be registered!");
             else if (newUser.UserType == UserType.Seller)
+            {
                 newUser.VerificationState = VerificationState.Waiting;
+                await _mailService.SendEmail("Verification", "Your account is successfully registered and is currently waiting for administrator to approve", newUser.Email);
+            }
             else
                 newUser.VerificationState = VerificationState.Accepted;
 

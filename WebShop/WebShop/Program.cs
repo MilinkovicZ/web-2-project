@@ -25,6 +25,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddScoped<ExceptionMiddleware>();
 
 builder.Services.AddAuthentication(options =>
