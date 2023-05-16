@@ -44,6 +44,9 @@ namespace WebShop.Services
                 product.Amount -= item.ProductAmount;
                 product.Items.Add(item);
 
+                item.ProductId = product.Id;
+                item.Product = product;
+
                 _unitOfWork.ProductsRepository.Update(product);
                 _unitOfWork.ItemsRepository.Update(item);
             }
