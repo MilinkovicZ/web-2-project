@@ -49,12 +49,12 @@ namespace WebShop.Controllers
 
         [HttpPost("DeclineOrder/{id}")]
         [Authorize(Roles = "Buyer")]
-        public async Task<IActionResult> DeclineOrder(int orderId)
+        public async Task<IActionResult> DeclineOrder(int id)
         {
             if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int buyerId))
                 throw new BadRequestException("Error occured with ID. Please try again.");
 
-            await _buyerService.DeclineOrder(orderId, buyerId);
+            await _buyerService.DeclineOrder(id, buyerId);
             return Ok();
         }
     }

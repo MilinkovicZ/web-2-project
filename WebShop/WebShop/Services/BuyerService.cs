@@ -19,7 +19,7 @@ namespace WebShop.Services
         public async Task CreateOrder(CreateOrderDTO orderDTO, int buyerId)
         {
             User? buyer = await _unitOfWork.UsersRepository.Get(buyerId);
-            if (buyer == null || buyer.IsDeleted)
+            if (buyer == null)
                 throw new BadRequestException("Unable to find user with " + buyerId + ".");
 
             var order = _mapper.Map<Order>(orderDTO);
@@ -30,7 +30,7 @@ namespace WebShop.Services
             foreach (var item in order.Items)
             {
                 Product? product = await _unitOfWork.ProductsRepository.Get(item.ProductId);
-                if (product == null || product.IsDeleted)
+                if (product == null)
                     throw new BadRequestException("Product is non existent.");
 
                 if (item.ProductAmount > product.Amount)
@@ -50,11 +50,11 @@ namespace WebShop.Services
         public async Task DeclineOrder(int orderId, int buyerId)
         {
             User? buyer = await _unitOfWork.UsersRepository.Get(buyerId);
-            if(buyer == null || buyer.IsDeleted)
+            if(buyer == null)
                 throw new BadRequestException("Unable to find user with " + buyerId + ".");
 
             Order? order = await _unitOfWork.OrdersRepository.Get(orderId);
-            if (order == null || order.IsDeleted)
+            if (order == null)
                 throw new BadRequestException("Order doesn't exist within this user.");
 
             order.OrderState = OrderState.Canceled;
@@ -64,18 +64,18 @@ namespace WebShop.Services
         public async Task<List<OrderDTO>> GetMyOrders(int buyerId)
         {
             User? buyer = await _unitOfWork.UsersRepository.Get(buyerId);
-            if (buyer == null || buyer.IsDeleted)
+            if (buyer == null)
                 throw new BadRequestException("Unable to find user with " + buyerId + ".");
 
             var buyerOrders = await _unitOfWork.OrdersRepository.GetAll();
-            List<Order> orders = buyerOrders.Where(x => x.BuyerId == buyerId && x.IsDeleted == false && (x.OrderState == OrderState.Preparing || x.OrderState == OrderState.Delievered)).ToList();
+            List<Order> orders = buyerOrders.Where(x => x.BuyerId == buyerId && (x.OrderState == OrderState.Preparing || x.OrderState == OrderState.Delievered)).ToList();
             return _mapper.Map<List<OrderDTO>>(orders);
         }
 
         public async Task<List<ProductDTO>> GetAllProducts()
         {
             var products = await _unitOfWork.ProductsRepository.GetAll();
-            List<Product> availableProduct = products.Where(x => !x.IsDeleted && x.Amount > 0).ToList();
+            List<Product> availableProduct = products.Where(x => x.Amount > 0).ToList();
             return _mapper.Map<List<ProductDTO>>(availableProduct);
         }
     }

@@ -16,12 +16,12 @@ namespace WebShop.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<OrderDTO>> GetAllOrders(int sellerId)
+        public Task UpdateProduct(int productId, ProductDTO productDTO, int sellerId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<ProductDTO>> GetAllProduct(int sellerId)
+        public Task<List<OrderDTO>> GetAllOrders(int sellerId)
         {
             throw new NotImplementedException();
         }
@@ -31,7 +31,7 @@ namespace WebShop.Services
             throw new NotImplementedException();
         }
 
-        public Task UpdateProduct(int productId, ProductDTO productDTO, int sellerId)
+        public Task<List<ProductDTO>> GetAllProduct(int sellerId)
         {
             throw new NotImplementedException();
         }
