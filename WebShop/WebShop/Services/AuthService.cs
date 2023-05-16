@@ -28,7 +28,7 @@ namespace WebShop.Services
 
         private async Task<User> GetUser(string email, string password)
         {
-            var users = await _unitOfWork.UsersRepository.GetAllAsync();
+            var users = await _unitOfWork.UsersRepository.GetAll();
             User? user = users.FirstOrDefault(u => u.Email == email);
             if (user == null || user.IsDeleted)            
                 throw new NotFoundException($"User with email: {email} could not be found.");
@@ -72,7 +72,7 @@ namespace WebShop.Services
         }
         public async Task Register(UserRegisterDTO userRegisterDTO)
         {
-            var users = await _unitOfWork.UsersRepository.GetAllAsync();
+            var users = await _unitOfWork.UsersRepository.GetAll();
 
             var existingEmail = users.FirstOrDefault(u => u.Email == userRegisterDTO.Email);
             if (existingEmail != null)

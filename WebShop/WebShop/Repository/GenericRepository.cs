@@ -12,12 +12,12 @@ namespace WebShop.Interfaces
             _dbContext = dbContext;
             entities = dbContext.Set<T>();
         }
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAll()
         {
             return await entities.ToListAsync();
         }
 
-        public async Task<T?> GetAsync(int id)
+        public async Task<T?> Get(int id)
         {
             return await entities.FindAsync(id);
         }

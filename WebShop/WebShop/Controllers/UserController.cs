@@ -23,9 +23,9 @@ namespace WebShop.Controllers
         [Authorize]
         public async Task<IActionResult> GetUserProfile()
         {
-            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int UserID))
+            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int userId))
                 throw new BadRequestException("Error occured with ID. Please try again.");
-            var userProfile = await _userService.GetUserProfile(UserID);
+            var userProfile = await _userService.GetUserProfile(userId);
 
             return Ok(userProfile);
         }
@@ -34,10 +34,10 @@ namespace WebShop.Controllers
         [Authorize]
         public async Task<IActionResult> EditUserProfile(EditUserDTO editUserDTO)
         {
-            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int UserID))
+            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int userId))
                 throw new BadRequestException("Error occured with ID. Please try again.");
 
-            await _userService.EditUserProfile(UserID, editUserDTO);
+            await _userService.EditUserProfile(userId, editUserDTO);
             return Ok();
         }
     }

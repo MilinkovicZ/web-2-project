@@ -10,6 +10,12 @@ namespace WebShop.Mapping
         {
             CreateMap<User, UserRegisterDTO>().ReverseMap();
             CreateMap<User, ProfileDTO>().ReverseMap();
+
+            CreateMap<Order, OrderDTO>().ReverseMap();
+            CreateMap<Order, CreateOrderDTO>().ReverseMap();
+            CreateMap<Item, ItemDTO>().ReverseMap();
+            CreateMap<Product, ProductDTO>().ReverseMap();
+            CreateMap<Product, CreateProductDTO>().ReverseMap();
         }
     }
 }

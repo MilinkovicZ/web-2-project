@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WebShop.Enums;
 
-namespace WebShop.Models
+namespace WebShop.DTO
 {
-    public class Product : EntityBase
+    public class CreateProductDTO
     {
         [Required]
         public string Name { get; set; } = null!;
@@ -13,10 +12,11 @@ namespace WebShop.Models
         public int Amount { get; set; }
         public string? Description { get; set; }
         public byte[]? Image { get; set; }
+    }
 
-        public User? Seller { get; set; }
+    public class ProductDTO : CreateProductDTO
+    {
         [Required]
-        public int SellerId { get; set; }
-        public List<Item>? Items { get; set; }
+        public int Id { get; set; }
     }
 }

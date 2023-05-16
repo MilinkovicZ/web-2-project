@@ -22,6 +22,7 @@ namespace WebShop.Models
         [Required]
         public VerificationState VerificationState { get; set; }
         public List<Order>? Orders { get; set; }
+        public List<Product>? Products { get; set; }
         public byte[]? Image { get; set; }
     }
 }

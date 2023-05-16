@@ -15,6 +15,7 @@ namespace WebShop.Infrastructure.Configurations
             modelBuilder.Property(x => x.Amount).IsRequired();
             modelBuilder.Property(x => x.Description).HasMaxLength(200);
             modelBuilder.Property(x => x.IsDeleted).HasDefaultValue(false);
+            modelBuilder.HasOne(x => x.Seller).WithMany(x => x.Products).HasForeignKey(x => x.SellerId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

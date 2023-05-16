@@ -18,8 +18,8 @@ namespace WebShop.Services
 
         public async Task<ProfileDTO> GetUserProfile(int id)
         {
-            User? user = await _unitOfWork.UsersRepository.GetAsync(id);
-            if (user == null)
+            User? user = await _unitOfWork.UsersRepository.Get(id);
+            if (user == null || user.IsDeleted)
                 throw new BadRequestException("Error occured with ID. Please try again.");
 
             return _mapper.Map<ProfileDTO>(user);
@@ -27,9 +27,9 @@ namespace WebShop.Services
 
         public async Task EditUserProfile(int id, EditUserDTO editUserDTO)
         {
-            var users = await _unitOfWork.UsersRepository.GetAllAsync();
-            User? user = await _unitOfWork.UsersRepository.GetAsync(id);
-            if (user == null)
+            var users = await _unitOfWork.UsersRepository.GetAll();
+            User? user = await _unitOfWork.UsersRepository.Get(id);
+            if (user == null || user.IsDeleted)
                 throw new BadRequestException("Error occured with ID. Please try again.");
 
             if (!BCrypt.Net.BCrypt.Verify(editUserDTO.Password, user.Password))

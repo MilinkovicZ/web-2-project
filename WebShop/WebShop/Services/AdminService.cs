@@ -18,25 +18,25 @@ namespace WebShop.Services
         }
         public async Task<List<User>> GetAllVerified()
         {
-            var users = await _unitOfWork.UsersRepository.GetAllAsync();
-            List<User> verified = users.Where(u => u.VerificationState == VerificationState.Accepted && u.UserType == UserType.Seller).ToList();
+            var users = await _unitOfWork.UsersRepository.GetAll();
+            List<User> verified = users.Where(u => !u.IsDeleted && u.VerificationState == VerificationState.Accepted && u.UserType == UserType.Seller).ToList();
             return verified;
         }
         public async Task<List<User>> GetAllUnverified()
         {
-            var users = await _unitOfWork.UsersRepository.GetAllAsync();
-            List<User> verified = users.Where(u => u.VerificationState == VerificationState.Waiting && u.UserType == UserType.Seller).ToList();
+            var users = await _unitOfWork.UsersRepository.GetAll();
+            List<User> verified = users.Where(u => !u.IsDeleted && u.VerificationState == VerificationState.Waiting && u.UserType == UserType.Seller).ToList();
             return verified;
         }
         public async Task VerifyUser(UserVerifyDTO userVerifyDTO)
         {
-            User? user = await _unitOfWork.UsersRepository.GetAsync(userVerifyDTO.Id);
-            if (user == null)
+            User? user = await _unitOfWork.UsersRepository.Get(userVerifyDTO.Id);
+            if (user == null || user.IsDeleted)
                 throw new BadRequestException("Error occured with ID. Please try again.");
 
             user.VerificationState = userVerifyDTO.verificationState;
 
-            if(user.VerificationState == VerificationState.Accepted)
+            if (user.VerificationState == VerificationState.Accepted)
                 await _mailService.SendEmail("Verification", "Your account is approved. You can now start selling.", user.Email);
             else
                 await _mailService.SendEmail("Verification", "Your account declined. Contact us for more information.", user.Email);
@@ -47,7 +47,9 @@ namespace WebShop.Services
 
         public async Task<List<Order>> GetAllOrders()
         {
-            return (await _unitOfWork.OrdersRepository.GetAllAsync()).ToList();
+            var orders = await _unitOfWork.OrdersRepository.GetAll();
+            List<Order> allOrders = orders.Where(x => !x.IsDeleted).ToList();
+            return allOrders;
         }
     }
 }

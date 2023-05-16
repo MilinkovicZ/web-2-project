@@ -30,6 +30,9 @@ namespace WebShop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<double>("CurrentPrice")
+                        .HasColumnType("float");
+
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -124,10 +127,15 @@ namespace WebShop.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<int>("SellerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
+
+                    b.HasIndex("SellerId");
 
                     b.ToTable("Products");
                 });
@@ -203,7 +211,7 @@ namespace WebShop.Migrations
                             Email = "john@example.com",
                             FullName = "John Smith",
                             IsDeleted = false,
-                            Password = "$2a$11$ZXsER/z83fjIrj0THYkgF.OYi1XMPGbGvQBbRkTXN3UV9RYgXRjqi",
+                            Password = "$2a$11$JgcUytMShTFGEazaf1C3wOcDk5bxdG.t2ekDSRNW4cOpL6WjiPdLe",
                             UserType = "Admin",
                             Username = "john123",
                             VerificationState = "Accepted"
@@ -215,13 +223,13 @@ namespace WebShop.Migrations
                     b.HasOne("WebShop.Models.Order", "Order")
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("WebShop.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("Items")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -234,10 +242,21 @@ namespace WebShop.Migrations
                     b.HasOne("WebShop.Models.User", "Buyer")
                         .WithMany("Orders")
                         .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Buyer");
+                });
+
+            modelBuilder.Entity("WebShop.Models.Product", b =>
+                {
+                    b.HasOne("WebShop.Models.User", "Seller")
+                        .WithMany("Products")
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Seller");
                 });
 
             modelBuilder.Entity("WebShop.Models.Order", b =>
@@ -245,9 +264,16 @@ namespace WebShop.Migrations
                     b.Navigation("Items");
                 });
 
+            modelBuilder.Entity("WebShop.Models.Product", b =>
+                {
+                    b.Navigation("Items");
+                });
+
             modelBuilder.Entity("WebShop.Models.User", b =>
                 {
                     b.Navigation("Orders");
+
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

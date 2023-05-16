@@ -20,7 +20,7 @@ namespace WebShop.Controllers
 
         [HttpGet("GetVerified")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetVerified()
+        public async Task<IActionResult> GetAllVerified()
         {
             var users = await _adminService.GetAllVerified();
             return Ok(users);
@@ -28,7 +28,7 @@ namespace WebShop.Controllers
 
         [HttpGet("GetUnverified")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetUnverified()
+        public async Task<IActionResult> GetAllUnverified()
         {
             var users = await _adminService.GetAllUnverified();
             return Ok(users);
@@ -45,7 +45,7 @@ namespace WebShop.Controllers
 
         [HttpGet("GetOrders")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetOrders()
+        public async Task<IActionResult> GetAllOrders()
         {
             var orders = await _adminService.GetAllOrders();
             return Ok(orders);
