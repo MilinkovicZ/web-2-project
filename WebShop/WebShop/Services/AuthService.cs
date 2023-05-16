@@ -30,7 +30,7 @@ namespace WebShop.Services
         {
             var users = await _unitOfWork.UsersRepository.GetAll();
             User? user = users.FirstOrDefault(u => u.Email == email);
-            if (user == null || user.IsDeleted)            
+            if (user == null)            
                 throw new NotFoundException($"User with email: {email} could not be found.");
             if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
                 throw new BadRequestException("Invalid Password");

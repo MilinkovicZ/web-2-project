@@ -14,12 +14,12 @@ namespace WebShop.Interfaces
         }
         public async Task<IEnumerable<T>> GetAll()
         {
-            return await entities.ToListAsync();
+            return await entities.Where(x => !x.IsDeleted).ToListAsync();
         }
 
         public async Task<T?> Get(int id)
         {
-            return await entities.FindAsync(id);
+            return await entities.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
         }
 
         public async Task Insert(T entity)

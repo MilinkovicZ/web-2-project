@@ -19,19 +19,19 @@ namespace WebShop.Services
         public async Task<List<User>> GetAllVerified()
         {
             var users = await _unitOfWork.UsersRepository.GetAll();
-            List<User> verified = users.Where(u => !u.IsDeleted && u.VerificationState == VerificationState.Accepted && u.UserType == UserType.Seller).ToList();
+            List<User> verified = users.Where(u => u.VerificationState == VerificationState.Accepted && u.UserType == UserType.Seller).ToList();
             return verified;
         }
         public async Task<List<User>> GetAllUnverified()
         {
             var users = await _unitOfWork.UsersRepository.GetAll();
-            List<User> verified = users.Where(u => !u.IsDeleted && u.VerificationState == VerificationState.Waiting && u.UserType == UserType.Seller).ToList();
+            List<User> verified = users.Where(u => u.VerificationState == VerificationState.Waiting && u.UserType == UserType.Seller).ToList();
             return verified;
         }
         public async Task VerifyUser(UserVerifyDTO userVerifyDTO)
         {
             User? user = await _unitOfWork.UsersRepository.Get(userVerifyDTO.Id);
-            if (user == null || user.IsDeleted)
+            if (user == null)
                 throw new BadRequestException("Error occured with ID. Please try again.");
 
             user.VerificationState = userVerifyDTO.verificationState;
@@ -48,8 +48,7 @@ namespace WebShop.Services
         public async Task<List<Order>> GetAllOrders()
         {
             var orders = await _unitOfWork.OrdersRepository.GetAll();
-            List<Order> allOrders = orders.Where(x => !x.IsDeleted).ToList();
-            return allOrders;
+            return orders.ToList();
         }
     }
 }
