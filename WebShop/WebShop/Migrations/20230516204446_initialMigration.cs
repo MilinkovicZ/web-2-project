@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebShop.Migrations
 {
     /// <inheritdoc />
-    public partial class initalMigration : Migration
+    public partial class initialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -43,6 +43,7 @@ namespace WebShop.Migrations
                     DeliveryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OrderState = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Preparing"),
                     Comment = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    TimeToDeliver = table.Column<TimeSpan>(type: "time", nullable: false),
                     BuyerId = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
@@ -110,7 +111,7 @@ namespace WebShop.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Address", "BirthDate", "Email", "FullName", "Image", "Password", "UserType", "Username", "VerificationState" },
-                values: new object[] { 1, "123 Main St, Anytown USA", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "john@example.com", "John Smith", null, "$2a$11$JgcUytMShTFGEazaf1C3wOcDk5bxdG.t2ekDSRNW4cOpL6WjiPdLe", "Admin", "john123", "Accepted" });
+                values: new object[] { 1, "123 Main St, Anytown USA", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "john@example.com", "John Smith", null, "$2a$11$94H.R.oTHCFuRF2xmipVjOBZLJb2Csk9PHudVdpjG4NmIi757aD.G", "Admin", "john123", "Accepted" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Item_OrderId",

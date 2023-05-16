@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System;
 using WebShop.DTO;
 using WebShop.Enums;
 using WebShop.Exceptions;
@@ -20,10 +21,11 @@ namespace WebShop.Services
         {
             User? buyer = await _unitOfWork.UsersRepository.Get(buyerId);
             if (buyer == null)
-                throw new BadRequestException("Unable to find user with " + buyerId + ".");
+                throw new NotFoundException("Unable to find user with ID: " + buyerId + ".");
 
             var order = _mapper.Map<Order>(orderDTO);
             order.BuyerId = buyerId;
+            order.Buyer = buyer;
             order.OrderState = OrderState.Preparing;
             order.DeliveryTime = DateTime.Now.AddHours(1).AddMinutes(new Random().Next(59));
 
@@ -31,7 +33,7 @@ namespace WebShop.Services
             {
                 Product? product = await _unitOfWork.ProductsRepository.Get(item.ProductId);
                 if (product == null)
-                    throw new BadRequestException("Product is non existent.");
+                    throw new NotFoundException("Product is non existent.");
 
                 if (item.ProductAmount > product.Amount)
                     throw new BadRequestException("Can't buy more product then available.");
@@ -40,7 +42,10 @@ namespace WebShop.Services
                     throw new BadRequestException("Can't buy negative number of products.");
 
                 product.Amount -= item.ProductAmount;
+                product.Items.Add(item);
+
                 _unitOfWork.ProductsRepository.Update(product);
+                _unitOfWork.ItemsRepository.Update(item);
             }
 
             await _unitOfWork.OrdersRepository.Insert(order);
@@ -50,26 +55,41 @@ namespace WebShop.Services
         public async Task DeclineOrder(int orderId, int buyerId)
         {
             User? buyer = await _unitOfWork.UsersRepository.Get(buyerId);
-            if(buyer == null)
-                throw new BadRequestException("Unable to find user with " + buyerId + ".");
+            if (buyer == null)
+                throw new NotFoundException("Unable to find user with ID: " + buyerId + ".");
 
             Order? order = await _unitOfWork.OrdersRepository.Get(orderId);
             if (order == null)
-                throw new BadRequestException("Order doesn't exist within this user.");
+                throw new NotFoundException("Order doesn't exist within this user.");
 
             order.OrderState = OrderState.Canceled;
+
+            foreach (var item in order.Items)
+            {
+                Product? product = await _unitOfWork.ProductsRepository.Get(item.ProductId);
+                if (product == null)
+                    throw new NotFoundException("Product is non existent.");
+
+                product.Amount += item.ProductAmount;
+                _unitOfWork.ProductsRepository.Update(product);
+            }
+
             _unitOfWork.OrdersRepository.Update(order);
             await _unitOfWork.Save();
         }
-        public async Task<List<OrderDTO>> GetMyOrders(int buyerId)
+        public async Task<List<OrderDTOWithTime>> GetMyOrders(int buyerId)
         {
             User? buyer = await _unitOfWork.UsersRepository.Get(buyerId);
             if (buyer == null)
-                throw new BadRequestException("Unable to find user with " + buyerId + ".");
+                throw new NotFoundException("Unable to find user with ID: " + buyerId + ".");
 
-            var buyerOrders = await _unitOfWork.OrdersRepository.GetAll();
-            List<Order> orders = buyerOrders.Where(x => x.BuyerId == buyerId && (x.OrderState == OrderState.Preparing || x.OrderState == OrderState.Delievered)).ToList();
-            return _mapper.Map<List<OrderDTO>>(orders);
+            var orders = await _unitOfWork.OrdersRepository.GetAll();
+            var buyerOrders = orders.Where(x => x.BuyerId == buyerId && (x.OrderState == OrderState.Preparing || x.OrderState == OrderState.Delievered)).ToList();
+            foreach (Order item in buyerOrders)
+            {
+                item.TimeToDeliver = item.DeliveryTime - DateTime.UtcNow;
+            }
+            return _mapper.Map<List<OrderDTOWithTime>>(buyerOrders);
         }
 
         public async Task<List<ProductDTO>> GetAllProducts()
@@ -77,6 +97,23 @@ namespace WebShop.Services
             var products = await _unitOfWork.ProductsRepository.GetAll();
             List<Product> availableProduct = products.Where(x => x.Amount > 0).ToList();
             return _mapper.Map<List<ProductDTO>>(availableProduct);
+        }
+
+        public async Task OrderDeliever(int orderId)
+        {
+            Order? order = await _unitOfWork.OrdersRepository.Get(orderId);
+            if (order == null)
+                throw new NotFoundException("Unable to find order with ID: " + orderId + ".");
+            if (order.OrderState != OrderState.Canceled)
+                throw new BadRequestException("Order with ID: " + orderId + " is already canceled.");
+
+            if (order.DeliveryTime <= DateTime.UtcNow)
+                order.OrderState = OrderState.Delievered;
+            else
+                order.OrderState = OrderState.Preparing;
+
+            _unitOfWork.OrdersRepository.Update(order);
+            await _unitOfWork.Save();
         }
     }
 }

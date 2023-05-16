@@ -13,10 +13,9 @@ namespace WebShop.Models
         public int Amount { get; set; }
         public string? Description { get; set; }
         public byte[]? Image { get; set; }
-
         public User? Seller { get; set; }
         [Required]
         public int SellerId { get; set; }
-        public List<Item>? Items { get; set; }
+        public List<Item> Items { get; set; } = new List<Item>();
     }
 }

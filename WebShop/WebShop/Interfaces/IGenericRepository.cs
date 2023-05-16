@@ -4,7 +4,7 @@ namespace WebShop.Interfaces
 {
     public interface IGenericRepository<T> where T : EntityBase
     {
-        Task<IEnumerable<T>> GetAll();
+        Task<IQueryable<T>> GetAll();
         Task<T?> Get(int id);
         Task Insert(T entity);
         void Update(T entity);

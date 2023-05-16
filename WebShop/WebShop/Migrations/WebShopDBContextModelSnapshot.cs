@@ -89,6 +89,9 @@ namespace WebShop.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("Preparing");
 
+                    b.Property<TimeSpan>("TimeToDeliver")
+                        .HasColumnType("time");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BuyerId");
@@ -211,7 +214,7 @@ namespace WebShop.Migrations
                             Email = "john@example.com",
                             FullName = "John Smith",
                             IsDeleted = false,
-                            Password = "$2a$11$JgcUytMShTFGEazaf1C3wOcDk5bxdG.t2ekDSRNW4cOpL6WjiPdLe",
+                            Password = "$2a$11$94H.R.oTHCFuRF2xmipVjOBZLJb2Csk9PHudVdpjG4NmIi757aD.G",
                             UserType = "Admin",
                             Username = "john123",
                             VerificationState = "Accepted"

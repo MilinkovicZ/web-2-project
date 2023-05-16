@@ -9,8 +9,8 @@ namespace WebShop.Interfaces
         Task CreateNewProduct(CreateProductDTO productDTO, int sellerId);
         Task UpdateProduct(int productId, ProductDTO productDTO, int sellerId);
         Task DeleteProduct(int productId, int sellerId);
-        Task<List<ProductDTO>> GetAllProduct(int sellerId);
+        Task<List<ProductDTO>> GetAllProducts(int sellerId);
         Task<List<OrderDTO>> GetAllOrders(int sellerId);
-        Task<List<OrderDTO>> GetNewOrders(int sellerId);
+        Task<List<OrderDTOWithTime>> GetNewOrders(int sellerId);
     }
 }

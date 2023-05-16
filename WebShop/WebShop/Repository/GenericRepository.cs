@@ -12,9 +12,10 @@ namespace WebShop.Interfaces
             _dbContext = dbContext;
             entities = dbContext.Set<T>();
         }
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IQueryable<T>> GetAll()
         {
-            return await entities.Where(x => !x.IsDeleted).ToListAsync();
+            var query = entities.Where(x => !x.IsDeleted);
+            return await Task.FromResult(query);
         }
 
         public async Task<T?> Get(int id)

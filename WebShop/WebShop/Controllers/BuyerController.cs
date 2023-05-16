@@ -38,7 +38,7 @@ namespace WebShop.Controllers
 
         [HttpPost("CreateOrder")]
         [Authorize(Roles = "Buyer")]
-        public async Task<IActionResult> CreateOrder(OrderDTO orderDTO)
+        public async Task<IActionResult> CreateOrder(CreateOrderDTO orderDTO)
         {
             if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int buyerId))
                 throw new BadRequestException("Error occured with ID. Please try again.");
@@ -55,6 +55,14 @@ namespace WebShop.Controllers
                 throw new BadRequestException("Error occured with ID. Please try again.");
 
             await _buyerService.DeclineOrder(id, buyerId);
+            return Ok();
+        }
+
+        [HttpPost("OrderDeliver/{id}")]
+        [Authorize(Roles = "Buyer")]
+        public async Task<IActionResult> OrderDeliver(int id)
+        {
+            await _buyerService.OrderDeliever(id);
             return Ok();
         }
     }

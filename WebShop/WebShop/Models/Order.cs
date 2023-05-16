@@ -12,6 +12,7 @@ namespace WebShop.Models
         [Required]
         public OrderState OrderState { get; set; }
         public string? Comment { get; set; }
+        public TimeSpan TimeToDeliver { get; set; }
         public User? Buyer { get; set; }
         [Required]
         public int BuyerId { get; set; }

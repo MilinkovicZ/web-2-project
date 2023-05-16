@@ -20,7 +20,7 @@ namespace WebShop.Services
         {
             User? user = await _unitOfWork.UsersRepository.Get(id);
             if (user == null)
-                throw new BadRequestException("Error occured with ID. Please try again.");
+                throw new NotFoundException("Error occured with ID. Please try again.");
 
             return _mapper.Map<ProfileDTO>(user);
         }
@@ -30,7 +30,7 @@ namespace WebShop.Services
             var users = await _unitOfWork.UsersRepository.GetAll();
             User? user = await _unitOfWork.UsersRepository.Get(id);
             if (user == null)
-                throw new BadRequestException("Error occured with ID. Please try again.");
+                throw new NotFoundException("Error occured with ID. Please try again.");
 
             if (!BCrypt.Net.BCrypt.Verify(editUserDTO.Password, user.Password))
                 throw new BadRequestException("You must enter correct current password in order to save changes.");
