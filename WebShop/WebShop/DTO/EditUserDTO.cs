@@ -26,6 +26,5 @@ namespace WebShop.DTO
         [MaxLength(40)]
         [Required]
         public string Address { get; set; } = null!;
-        public byte[]? Image { get; set; }
     }
 }

@@ -58,13 +58,15 @@ namespace WebShop.Services
             if (buyer == null)
                 throw new UnauthorizedException($"Unable to find user with ID: {buyerId}.");
 
-            Order? order = await _unitOfWork.OrdersRepository.Get(orderId);
-            if (order == null)
+            var orders = await _unitOfWork.OrdersRepository.GetAll();
+            var includedOrder = orders.Include(x => x.Items).ThenInclude(x => x.Product);
+            var myOrder = includedOrder.FirstOrDefault(x => x.Id == orderId);
+            if (myOrder == null)
                 throw new NotFoundException("Order doesn't exist within this user.");
 
-            order.OrderState = OrderState.Canceled;
+            myOrder.OrderState = OrderState.Canceled;
 
-            foreach (var item in order.Items)
+            foreach (var item in myOrder.Items)
             {
                 Product? product = await _unitOfWork.ProductsRepository.Get(item.ProductId);
                 if (product == null)
@@ -74,7 +76,7 @@ namespace WebShop.Services
                 _unitOfWork.ProductsRepository.Update(product);
             }
 
-            _unitOfWork.OrdersRepository.Update(order);
+            _unitOfWork.OrdersRepository.Update(myOrder);
             await _unitOfWork.Save();
         }
         public async Task<List<OrderDTO>> GetMyOrders(int buyerId)
