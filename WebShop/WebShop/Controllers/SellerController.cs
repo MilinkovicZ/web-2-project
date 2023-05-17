@@ -11,10 +11,10 @@ namespace WebShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SellerControler : ControllerBase
+    public class SellerController : ControllerBase
     {
         private readonly ISellerService _sellerService;
-        public SellerControler(ISellerService sellerService)
+        public SellerController(ISellerService sellerService)
         {
             _sellerService = sellerService;
         }
@@ -76,7 +76,7 @@ namespace WebShop.Controllers
 
         [HttpPut("UpdateProduct/{id}")]
         [Authorize(Roles = "Seller")]
-        public async Task<IActionResult> UpdateProduct(int id, ProductDTO productDTO)
+        public async Task<IActionResult> UpdateProduct(int id, CreateProductDTO productDTO)
         {
             if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int sellerId))
                 throw new BadRequestException("Error occured with ID. Please try again.");

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using WebShop.DTO;
 using WebShop.Enums;
@@ -87,10 +88,13 @@ namespace WebShop.Services
                 throw new NotFoundException("Unable to find user with ID: " + buyerId + ".");
 
             var orders = await _unitOfWork.OrdersRepository.GetAll();
-            var buyerOrders = orders.Where(x => x.BuyerId == buyerId && (x.OrderState == OrderState.Preparing || x.OrderState == OrderState.Delievered)).ToList();
-            foreach (Order item in buyerOrders)
+            var includedOrders = orders.Include(x => x.Items).ThenInclude(x => x.Product).ToList();
+            var buyerOrders = includedOrders.Where(x => x.BuyerId == buyerId && (x.OrderState == OrderState.Preparing || x.OrderState == OrderState.Delievered)).ToList();
+            foreach (Order order in buyerOrders)
             {
-                item.TimeToDeliver = item.DeliveryTime - DateTime.UtcNow;
+                order.TimeToDeliver = order.DeliveryTime - DateTime.Now;
+                _unitOfWork.OrdersRepository.Update(order);
+                await _unitOfWork.Save();
             }
             return _mapper.Map<List<OrderDTOWithTime>>(buyerOrders);
         }
@@ -107,7 +111,7 @@ namespace WebShop.Services
             Order? order = await _unitOfWork.OrdersRepository.Get(orderId);
             if (order == null)
                 throw new NotFoundException("Unable to find order with ID: " + orderId + ".");
-            if (order.OrderState != OrderState.Canceled)
+            if (order.OrderState == OrderState.Canceled)
                 throw new BadRequestException("Order with ID: " + orderId + " is already canceled.");
 
             if (order.DeliveryTime <= DateTime.UtcNow)

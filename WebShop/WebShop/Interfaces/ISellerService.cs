@@ -7,7 +7,7 @@ namespace WebShop.Interfaces
     public interface ISellerService
     {
         Task CreateNewProduct(CreateProductDTO productDTO, int sellerId);
-        Task UpdateProduct(int productId, ProductDTO productDTO, int sellerId);
+        Task UpdateProduct(int productId, CreateProductDTO productDTO, int sellerId);
         Task DeleteProduct(int productId, int sellerId);
         Task<List<ProductDTO>> GetAllProducts(int sellerId);
         Task<List<OrderDTO>> GetAllOrders(int sellerId);

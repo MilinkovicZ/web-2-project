@@ -3,7 +3,7 @@ using WebShop.Enums;
 
 namespace WebShop.DTO
 {
-    public class ProfileDTO
+    public class UserProfileDTO
     {
         public string Username { get; set; } = null!;
         public string Email { get; set; } = null!;

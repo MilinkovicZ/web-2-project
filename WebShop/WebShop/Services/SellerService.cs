@@ -47,7 +47,7 @@ namespace WebShop.Services
             await _unitOfWork.Save();
         }
 
-        public async Task UpdateProduct(int productId, ProductDTO productDTO, int sellerId)
+        public async Task UpdateProduct(int productId, CreateProductDTO productDTO, int sellerId)
         {
             User? seller = await _unitOfWork.UsersRepository.Get(sellerId);
             if (seller == null)
@@ -84,9 +84,11 @@ namespace WebShop.Services
             var orders = await _unitOfWork.OrdersRepository.GetAll();
             var includedOrders = orders.Where(o => o.OrderState == OrderState.Preparing).Include(o => o.Items).ThenInclude(i => i.Product);
             var sellerOrders = includedOrders.Where(o => o.Items.Any(i => i.Product!.SellerId == sellerId)).ToList();
-            foreach (Order item in sellerOrders)
+            foreach (Order order in sellerOrders)
             {
-                item.TimeToDeliver = item.DeliveryTime - DateTime.UtcNow;
+                order.TimeToDeliver = order.DeliveryTime - DateTime.Now; 
+                _unitOfWork.OrdersRepository.Update(order);
+                await _unitOfWork.Save();
             }
             return _mapper.Map<List<OrderDTOWithTime>>(sellerOrders);
         }

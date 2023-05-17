@@ -7,9 +7,11 @@ namespace WebShop.DTO
     {
         [Required]
         [MaxLength(20)]
+        [RegularExpression("[a-zA-Z0-9]+")]
         public string Username { get; set; } = null!;
         [Required]
         [MaxLength(30)]
+        [EmailAddress]
         public string Email { get; set; } = null!;
         [Required]
         [MaxLength(30)]

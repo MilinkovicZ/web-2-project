@@ -2,11 +2,16 @@
 
 namespace WebShop.DTO
 {
-    public class ItemDTO
+    public class CreateItemDTO
     {
         [Required]
         public int ProductId { get; set; }
         [Required]
         public int ProductAmount { get; set; }
+    }
+
+    public class ItemDTO : CreateItemDTO
+    {
+        public CreateProductDTO? Product { get; set; }
     }
 }

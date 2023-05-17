@@ -16,13 +16,13 @@ namespace WebShop.Services
             _mapper = mapper;
         }
 
-        public async Task<ProfileDTO> GetUserProfile(int id)
+        public async Task<UserProfileDTO> GetUserProfile(int id)
         {
             User? user = await _unitOfWork.UsersRepository.Get(id);
             if (user == null)
                 throw new NotFoundException("Error occured with ID. Please try again.");
 
-            return _mapper.Map<ProfileDTO>(user);
+            return _mapper.Map<UserProfileDTO>(user);
         }
 
         public async Task EditUserProfile(int id, EditUserDTO editUserDTO)

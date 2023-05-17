@@ -6,6 +6,7 @@ namespace WebShop.DTO
     {
         [Required]
         [MaxLength(30)]
+        [EmailAddress]
         public string Email { get; set; } = null!;
         [Required]
         [MaxLength(30)]
