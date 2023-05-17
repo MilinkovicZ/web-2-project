@@ -28,14 +28,14 @@ namespace WebShop.Infrastructure.Configurations
             modelBuilder.HasData(new User
             {
                 Id = 1,
-                Username = "john123",
-                Email = "john@example.com",
-                FullName = "John Smith",
-                Password = BCrypt.Net.BCrypt.HashPassword("password123"),
-                Address = "123 Main St, Anytown USA",
+                Username = "zdravkoAdmin",
+                Email = "zdravkoAdmin@gmail.com",
+                FullName = "Zdravko Milinkovic",
+                Password = BCrypt.Net.BCrypt.HashPassword("zdravkoAdmin"),
+                Address = "Bihacka 33",
                 UserType = UserType.Admin,
                 VerificationState = VerificationState.Accepted,
-                BirthDate = new DateTime(1990, 1, 1)
+                BirthDate = new DateTime(200, 8, 11)
             });
         }
     }
