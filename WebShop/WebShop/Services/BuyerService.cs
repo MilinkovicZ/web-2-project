@@ -22,11 +22,10 @@ namespace WebShop.Services
         {
             User? buyer = await _unitOfWork.UsersRepository.Get(buyerId);
             if (buyer == null)
-                throw new NotFoundException("Unable to find user with ID: " + buyerId + ".");
+                throw new UnauthorizedException($"Unable to find user with ID: {buyerId}.");
 
             var order = _mapper.Map<Order>(orderDTO);
             order.BuyerId = buyerId;
-            order.Buyer = buyer;
             order.OrderState = OrderState.Preparing;
             order.DeliveryTime = DateTime.Now.AddHours(1).AddMinutes(new Random().Next(59));
 
@@ -43,10 +42,7 @@ namespace WebShop.Services
                     throw new BadRequestException("Can't buy negative number of products.");
 
                 product.Amount -= item.ProductAmount;
-                product.Items.Add(item);
-
                 item.ProductId = product.Id;
-                item.Product = product;
 
                 _unitOfWork.ProductsRepository.Update(product);
                 _unitOfWork.ItemsRepository.Update(item);
@@ -60,7 +56,7 @@ namespace WebShop.Services
         {
             User? buyer = await _unitOfWork.UsersRepository.Get(buyerId);
             if (buyer == null)
-                throw new NotFoundException("Unable to find user with ID: " + buyerId + ".");
+                throw new UnauthorizedException($"Unable to find user with ID: {buyerId}.");
 
             Order? order = await _unitOfWork.OrdersRepository.Get(orderId);
             if (order == null)
@@ -85,22 +81,30 @@ namespace WebShop.Services
         {
             User? buyer = await _unitOfWork.UsersRepository.Get(buyerId);
             if (buyer == null)
-                throw new NotFoundException("Unable to find user with ID: " + buyerId + ".");
+                throw new UnauthorizedException($"Unable to find user with ID: {buyerId}.");
 
             var orders = await _unitOfWork.OrdersRepository.GetAll();
             var includedOrders = orders.Include(x => x.Items).ThenInclude(x => x.Product).ToList();
             var buyerOrders = includedOrders.Where(x => x.BuyerId == buyerId && (x.OrderState == OrderState.Preparing || x.OrderState == OrderState.Delievered)).ToList();
             foreach (Order order in buyerOrders)
             {
-                order.TimeToDeliver = order.DeliveryTime - DateTime.Now;
-                _unitOfWork.OrdersRepository.Update(order);
-                await _unitOfWork.Save();
+                if (order.TimeToDeliver.CompareTo(TimeSpan.Zero) < 0)
+                {
+                    order.OrderState = OrderState.Delievered;
+                    order.TimeToDeliver = TimeSpan.Zero;
+                    _unitOfWork.OrdersRepository.Update(order);
+                    await _unitOfWork.Save();
+                }
             }
             return _mapper.Map<List<OrderDTOWithTime>>(buyerOrders);
         }
 
-        public async Task<List<ProductDTO>> GetAllProducts()
+        public async Task<List<ProductDTO>> GetAllProducts(int buyerId)
         {
+            User? buyer = await _unitOfWork.UsersRepository.Get(buyerId);
+            if (buyer == null)
+                throw new UnauthorizedException($"Unable to find user with ID: {buyerId}.");
+
             var products = await _unitOfWork.ProductsRepository.GetAll();
             List<Product> availableProduct = products.Where(x => x.Amount > 0).ToList();
             return _mapper.Map<List<ProductDTO>>(availableProduct);
@@ -110,9 +114,9 @@ namespace WebShop.Services
         {
             Order? order = await _unitOfWork.OrdersRepository.Get(orderId);
             if (order == null)
-                throw new NotFoundException("Unable to find order with ID: " + orderId + ".");
+                throw new NotFoundException($"Unable to find order with ID: {orderId}.");
             if (order.OrderState == OrderState.Canceled)
-                throw new BadRequestException("Order with ID: " + orderId + " is already canceled.");
+                throw new BadRequestException($"Order with ID: {orderId} is already canceled.");
 
             if (order.DeliveryTime <= DateTime.UtcNow)
                 order.OrderState = OrderState.Delievered;

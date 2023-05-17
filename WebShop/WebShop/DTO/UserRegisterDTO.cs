@@ -26,6 +26,5 @@ namespace WebShop.DTO
         public string Address { get; set; } = null!;
         [Required]
         public UserType UserType { get; set; }
-        public byte[]? Image { get; set; }
     }
 }

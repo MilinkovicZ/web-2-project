@@ -20,7 +20,7 @@ namespace WebShop.Services
         {
             User? user = await _unitOfWork.UsersRepository.Get(id);
             if (user == null)
-                throw new NotFoundException("Error occured with ID. Please try again.");
+                throw new UnauthorizedException($"Unable to find user with ID: {id}.");
 
             return _mapper.Map<UserProfileDTO>(user);
         }
@@ -30,7 +30,7 @@ namespace WebShop.Services
             var users = await _unitOfWork.UsersRepository.GetAll();
             User? user = await _unitOfWork.UsersRepository.Get(id);
             if (user == null)
-                throw new NotFoundException("Error occured with ID. Please try again.");
+                throw new UnauthorizedException($"Unable to find user with ID: {id}.");
 
             if (!BCrypt.Net.BCrypt.Verify(editUserDTO.Password, user.Password))
                 throw new BadRequestException("You must enter correct current password in order to save changes.");
@@ -60,10 +60,38 @@ namespace WebShop.Services
                 user.Address = editUserDTO.Address;
             if (user.BirthDate != editUserDTO.BirthDate)
                 user.BirthDate = editUserDTO.BirthDate;
-            user.Image = editUserDTO.Image;
 
             _unitOfWork.UsersRepository.Update(user);
             await _unitOfWork.Save();
+        }
+
+        public async Task AddPicture(int id, IFormFile image)
+        {
+            User? user = await _unitOfWork.UsersRepository.Get(id);
+            if (user == null)
+                throw new BadRequestException($"There was and error with user ID: {id}");
+
+            using(var ms = new MemoryStream())
+            {
+                image.CopyTo(ms);
+                var imageBytes = ms.ToArray();
+
+                user.Image = imageBytes;
+                _unitOfWork.UsersRepository.Update(user);
+            }
+
+            await _unitOfWork.Save();
+        }
+
+        public async Task<byte[]> GetPicture(int id)
+        {
+            User? user = await _unitOfWork.UsersRepository.Get(id);
+            if (user == null)
+                throw new BadRequestException($"There was and error with user ID: {id}");
+            if (user.Image == null)
+                throw new NotFoundException($"User with ID: {id} doesn't have image");
+
+            return user.Image;
         }
     }
 }

@@ -12,5 +12,6 @@ namespace WebShop.Interfaces
         Task<List<ProductDTO>> GetAllProducts(int sellerId);
         Task<List<OrderDTO>> GetAllOrders(int sellerId);
         Task<List<OrderDTOWithTime>> GetNewOrders(int sellerId);
+        Task AddProductPicture(int productId, IFormFile image, int sellerId);
     }
 }

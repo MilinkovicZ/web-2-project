@@ -21,7 +21,10 @@ namespace WebShop.Controllers
         [Authorize(Roles = "Buyer")]
         public async Task<IActionResult> GetAllProducts()
         {
-            var products = await _buyerService.GetAllProducts();
+            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int buyerId))
+                throw new BadRequestException("Error occured with ID. Please try again.");
+
+            var products = await _buyerService.GetAllProducts(buyerId);
             return Ok(products);
         }
 

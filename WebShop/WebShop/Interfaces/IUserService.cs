@@ -4,7 +4,9 @@ namespace WebShop.Interfaces
 {
     public interface IUserService
     {
-        public Task<UserProfileDTO> GetUserProfile(int id);
-        public Task EditUserProfile(int id, EditUserDTO editUserDTO);
+        Task<UserProfileDTO> GetUserProfile(int id);
+        Task EditUserProfile(int id, EditUserDTO editUserDTO);
+        Task AddPicture(int id, IFormFile image);
+        Task<byte[]> GetPicture(int id);
     }
 }

@@ -87,7 +87,7 @@ namespace WebShop.Services
             var newUser = _mapper.Map<User>(userRegisterDTO);
 
             if (newUser.UserType == UserType.Admin)
-                throw new BadRequestException("Admin can't be registered!");
+                throw new UnauthorizedException("Admin can't be registered!");
             else if (newUser.UserType == UserType.Seller)
             {
                 newUser.VerificationState = VerificationState.Waiting;

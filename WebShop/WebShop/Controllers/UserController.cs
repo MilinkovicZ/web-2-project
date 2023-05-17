@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 using WebShop.DTO;
 using WebShop.Exceptions;
 using WebShop.Interfaces;
@@ -30,7 +31,7 @@ namespace WebShop.Controllers
             return Ok(userProfile);
         }
 
-        [HttpPut]
+        [HttpPut("EditProfile")]
         [Authorize]
         public async Task<IActionResult> EditUserProfile(EditUserDTO editUserDTO)
         {
@@ -39,6 +40,28 @@ namespace WebShop.Controllers
 
             await _userService.EditUserProfile(userId, editUserDTO);
             return Ok();
+        }
+
+        [HttpPut("AddImage")]
+        [Authorize]
+        public async Task<IActionResult> AddPicture(IFormFile image)
+        {
+            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int userId))
+                throw new BadRequestException("Error occured with ID. Please try again.");
+
+            await _userService.AddPicture(userId, image);
+            return Ok();
+        }
+
+        [HttpGet("GetPicture")]
+        [Authorize]
+        public async Task<ActionResult> GetPicture()
+        {
+            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int userId))
+                throw new BadRequestException("Error occured with ID. Please try again.");
+
+            byte[] image = await _userService.GetPicture(userId);
+            return File(image, "image/*");
         }
     }
 }

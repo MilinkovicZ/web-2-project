@@ -5,7 +5,7 @@ namespace WebShop.Interfaces
 {
     public interface IBuyerService
     {
-        Task<List<ProductDTO>> GetAllProducts();
+        Task<List<ProductDTO>> GetAllProducts(int buyerId);
         Task CreateOrder(CreateOrderDTO orderDTO, int buyerId);
         Task DeclineOrder(int orderId, int buyerId);
         Task<List<OrderDTOWithTime>> GetMyOrders(int buyerId);

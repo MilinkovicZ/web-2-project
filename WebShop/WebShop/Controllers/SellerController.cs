@@ -84,5 +84,16 @@ namespace WebShop.Controllers
             await _sellerService.UpdateProduct(id, productDTO, sellerId);
             return Ok();
         }
+
+        [HttpPut("AddProductImage/{id}")]
+        [Authorize]
+        public async Task<IActionResult> AddProductPicture(int id, IFormFile image)
+        {
+            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int sellerId))
+                throw new BadRequestException("Error occured with ID. Please try again.");
+
+            await _sellerService.AddProductPicture(id, image, sellerId);
+            return Ok();
+        }
     }
 }
