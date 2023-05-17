@@ -77,7 +77,7 @@ namespace WebShop.Services
             _unitOfWork.OrdersRepository.Update(order);
             await _unitOfWork.Save();
         }
-        public async Task<List<OrderDTOWithTime>> GetMyOrders(int buyerId)
+        public async Task<List<OrderDTO>> GetMyOrders(int buyerId)
         {
             User? buyer = await _unitOfWork.UsersRepository.Get(buyerId);
             if (buyer == null)
@@ -86,17 +86,8 @@ namespace WebShop.Services
             var orders = await _unitOfWork.OrdersRepository.GetAll();
             var includedOrders = orders.Include(x => x.Items).ThenInclude(x => x.Product).ToList();
             var buyerOrders = includedOrders.Where(x => x.BuyerId == buyerId && (x.OrderState == OrderState.Preparing || x.OrderState == OrderState.Delievered)).ToList();
-            foreach (Order order in buyerOrders)
-            {
-                if (order.TimeToDeliver.CompareTo(TimeSpan.Zero) < 0)
-                {
-                    order.OrderState = OrderState.Delievered;
-                    order.TimeToDeliver = TimeSpan.Zero;
-                    _unitOfWork.OrdersRepository.Update(order);
-                    await _unitOfWork.Save();
-                }
-            }
-            return _mapper.Map<List<OrderDTOWithTime>>(buyerOrders);
+            
+            return _mapper.Map<List<OrderDTO>>(buyerOrders);
         }
 
         public async Task<List<ProductDTO>> GetAllProducts(int buyerId)
@@ -108,23 +99,6 @@ namespace WebShop.Services
             var products = await _unitOfWork.ProductsRepository.GetAll();
             List<Product> availableProduct = products.Where(x => x.Amount > 0).ToList();
             return _mapper.Map<List<ProductDTO>>(availableProduct);
-        }
-
-        public async Task OrderDeliever(int orderId)
-        {
-            Order? order = await _unitOfWork.OrdersRepository.Get(orderId);
-            if (order == null)
-                throw new NotFoundException($"Unable to find order with ID: {orderId}.");
-            if (order.OrderState == OrderState.Canceled)
-                throw new BadRequestException($"Order with ID: {orderId} is already canceled.");
-
-            if (order.DeliveryTime <= DateTime.UtcNow)
-                order.OrderState = OrderState.Delievered;
-            else
-                order.OrderState = OrderState.Preparing;
-
-            _unitOfWork.OrdersRepository.Update(order);
-            await _unitOfWork.Save();
         }
     }
 }

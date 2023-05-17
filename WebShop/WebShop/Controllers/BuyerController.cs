@@ -60,13 +60,5 @@ namespace WebShop.Controllers
             await _buyerService.DeclineOrder(id, buyerId);
             return Ok();
         }
-
-        [HttpPost("OrderDeliver/{id}")]
-        [Authorize(Roles = "Buyer")]
-        public async Task<IActionResult> OrderDeliver(int id)
-        {
-            await _buyerService.OrderDeliever(id);
-            return Ok();
-        }
     }
 }

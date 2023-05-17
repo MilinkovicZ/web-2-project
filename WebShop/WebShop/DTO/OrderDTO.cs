@@ -18,9 +18,4 @@ namespace WebShop.DTO
         [Required]
         public int Id { get; set; }
     }
-
-    public class OrderDTOWithTime : OrderDTO
-    {
-        public TimeSpan TimeToDeliver { get; set;}
-    }
 }

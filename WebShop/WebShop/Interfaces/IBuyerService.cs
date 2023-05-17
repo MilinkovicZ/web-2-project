@@ -8,7 +8,6 @@ namespace WebShop.Interfaces
         Task<List<ProductDTO>> GetAllProducts(int buyerId);
         Task CreateOrder(CreateOrderDTO orderDTO, int buyerId);
         Task DeclineOrder(int orderId, int buyerId);
-        Task<List<OrderDTOWithTime>> GetMyOrders(int buyerId);
-        Task OrderDeliever(int orderId);
+        Task<List<OrderDTO>> GetMyOrders(int buyerId);
     }
 }

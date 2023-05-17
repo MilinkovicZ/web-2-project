@@ -11,7 +11,7 @@ namespace WebShop.Interfaces
         Task DeleteProduct(int productId, int sellerId);
         Task<List<ProductDTO>> GetAllProducts(int sellerId);
         Task<List<OrderDTO>> GetAllOrders(int sellerId);
-        Task<List<OrderDTOWithTime>> GetNewOrders(int sellerId);
+        Task<List<OrderDTO>> GetNewOrders(int sellerId);
         Task AddProductPicture(int productId, IFormFile image, int sellerId);
     }
 }
