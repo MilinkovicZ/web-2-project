@@ -13,7 +13,7 @@ namespace WebShop.Infrastructure.Configurations
             modelBuilder.HasOne(x => x.Product).WithMany(x => x.Items).HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Property(x => x.ProductAmount).IsRequired();
             modelBuilder.Property(x => x.CurrentPrice).IsRequired();
-            modelBuilder.Property(x => x.IsDeleted).HasDefaultValue(false);
+            modelBuilder.Property(x => x.IsDeleted).HasDefaultValue(false).IsRequired();
         }
     }
 }

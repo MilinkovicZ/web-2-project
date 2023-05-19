@@ -20,9 +20,9 @@ namespace WebShop.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
+        [HttpGet("GetProfile")]
         [Authorize]
-        public async Task<IActionResult> GetUserProfile()
+        public async Task<IActionResult> Get()
         {
             if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int userId))
                 throw new BadRequestException("Error occured with ID. Please try again.");

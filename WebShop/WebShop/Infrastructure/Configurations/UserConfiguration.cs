@@ -23,7 +23,7 @@ namespace WebShop.Infrastructure.Configurations
             modelBuilder.Property(x => x.UserType).HasConversion(new EnumToStringConverter<UserType>()).IsRequired(); //Cuva u BP string umesto broja
             modelBuilder.Property(x => x.VerificationState).HasConversion(new EnumToStringConverter<VerificationState>()).IsRequired();
             modelBuilder.Property(x => x.BirthDate).IsRequired();
-            modelBuilder.Property(x => x.IsDeleted).HasDefaultValue(false);
+            modelBuilder.Property(x => x.IsDeleted).HasDefaultValue(false).IsRequired();
 
             modelBuilder.HasData(new User
             {

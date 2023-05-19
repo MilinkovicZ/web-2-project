@@ -79,7 +79,7 @@ namespace WebShop.Services
                 throw new BadRequestException("User with this email is already registered");
 
             var existingUsername = users.FirstOrDefault(u => u.Username == userRegisterDTO.Username);
-            if (existingEmail != null)
+            if (existingUsername != null)
                 throw new BadRequestException("User with this username is already registered");
 
             userRegisterDTO.Password = BCrypt.Net.BCrypt.HashPassword(userRegisterDTO.Password);

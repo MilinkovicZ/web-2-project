@@ -12,9 +12,10 @@ namespace WebShop.Infrastructure.Configurations
         {
             modelBuilder.HasKey(x => x.Id);
             modelBuilder.Property(x => x.DeliveryAddress).IsRequired();
+            modelBuilder.Property(x => x.StartTime).IsRequired();
             modelBuilder.Property(x => x.DeliveryTime).IsRequired();
             modelBuilder.Property(x => x.Comment).HasMaxLength(100);
-            modelBuilder.Property(x => x.IsDeleted).HasDefaultValue(false);
+            modelBuilder.Property(x => x.IsDeleted).HasDefaultValue(false).IsRequired();
             modelBuilder.Property(x => x.OrderState).HasConversion(new EnumToStringConverter<OrderState>()).IsRequired().HasDefaultValue(OrderState.Preparing);
             modelBuilder.HasOne(x => x.Buyer).WithMany(x => x.Orders).HasForeignKey(x => x.BuyerId).OnDelete(DeleteBehavior.NoAction);
         }

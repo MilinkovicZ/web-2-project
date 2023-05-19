@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import classes from './Login.module.css';
-import authService from '../../services/authService.js'
+import { Link } from 'react-router-dom';
+import AuthContext from '../../store/authContext';
 
 const Login = () => {
+  const authContext = useContext(AuthContext);
+
   const [loginValues, setLoginValues] = useState({
     email: "",
     password: "",
@@ -27,7 +30,7 @@ const Login = () => {
       return;
     }
 
-    authService.login(loginValues);
+    authContext.login(loginValues);
   };
 
   return (
@@ -58,6 +61,10 @@ const Login = () => {
           <button type="submit" className={classes.button}>
             Login
           </button>
+          <p>
+            Don't have an account?{' '}
+            <Link to="/register"> Register here.</Link>
+          </p>
         </form>
       </div>
     </React.Fragment>

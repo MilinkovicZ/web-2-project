@@ -8,6 +8,8 @@ namespace WebShop.Models
         [Required]
         public string DeliveryAddress { get; set; } = null!;
         [Required]
+        public DateTime StartTime { get; set; }
+        [Required]
         public DateTime DeliveryTime { get; set; }
         [Required]
         public OrderState OrderState { get; set; }

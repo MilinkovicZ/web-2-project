@@ -27,6 +27,7 @@ namespace WebShop.Services
             var order = _mapper.Map<Order>(orderDTO);
             order.BuyerId = buyerId;
             order.OrderState = OrderState.Preparing;
+            order.StartTime = DateTime.Now;
             order.DeliveryTime = DateTime.Now.AddHours(1).AddMinutes(new Random().Next(59));
 
             foreach (var item in order.Items)
@@ -42,10 +43,7 @@ namespace WebShop.Services
                     throw new BadRequestException("Can't buy negative number of products.");
 
                 product.Amount -= item.ProductAmount;
-                item.ProductId = product.Id;
-
                 _unitOfWork.ProductsRepository.Update(product);
-                _unitOfWork.ItemsRepository.Update(item);
             }
 
             await _unitOfWork.OrdersRepository.Insert(order);
@@ -63,6 +61,10 @@ namespace WebShop.Services
             var myOrder = includedOrder.FirstOrDefault(x => x.Id == orderId);
             if (myOrder == null)
                 throw new NotFoundException("Order doesn't exist within this user.");
+            if (myOrder.OrderState == OrderState.Delievered)
+                throw new BadRequestException("Can't cancel already delivered order.");
+            if (myOrder.StartTime.AddHours(1) < DateTime.Now)
+                throw new BadRequestException("1 hour already passed, you can't cancel your order.");
 
             myOrder.OrderState = OrderState.Canceled;
 
