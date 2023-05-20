@@ -19,7 +19,7 @@ namespace WebShop.Controllers
             _sellerService = sellerService;
         }
 
-        [HttpGet("Products")]
+        [HttpGet("GetProducts")]
         [Authorize(Roles = "Seller")]
         public async Task<IActionResult> GetAllProducts()
         {

@@ -82,16 +82,5 @@ namespace WebShop.Services
 
             await _unitOfWork.Save();
         }
-
-        public async Task<byte[]> GetPicture(int id)
-        {
-            User? user = await _unitOfWork.UsersRepository.Get(id);
-            if (user == null)
-                throw new BadRequestException($"There was and error with user ID: {id}");
-            if (user.Image == null)
-                throw new NotFoundException($"User with ID: {id} doesn't have image");
-
-            return user.Image;
-        }
     }
 }

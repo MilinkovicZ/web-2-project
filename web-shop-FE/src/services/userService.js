@@ -28,11 +28,24 @@ const editProfile = async (editProfileValues) => {
       },
     };    
   
-    const response = await API.put('User/EditProfile', editProfileValues, config);
+    await API.put('User/EditProfile', editProfileValues, config);
+}
+
+const addPicture = async (image) => {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'content-type': 'multipart/form-data',
+      },
+    }; 
+
+    await API.put('User/AddPicture', image, config);
 }
 
 export default{
     register,
     getProfile,
-    editProfile
+    editProfile,
+    addPicture
 }

@@ -17,7 +17,7 @@ namespace WebShop.Controllers
             _buyerService = buyerService;
         }
 
-        [HttpGet("Products")]
+        [HttpGet("GetProducts")]
         [Authorize(Roles = "Buyer")]
         public async Task<IActionResult> GetAllProducts()
         {
@@ -28,7 +28,7 @@ namespace WebShop.Controllers
             return Ok(products);
         }
 
-        [HttpGet("Orders")]
+        [HttpGet("GetOrders")]
         [Authorize(Roles = "Buyer")]
         public async Task<IActionResult> GetMyOrders()
         {

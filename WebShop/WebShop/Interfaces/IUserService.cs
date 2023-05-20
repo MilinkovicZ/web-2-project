@@ -7,6 +7,5 @@ namespace WebShop.Interfaces
         Task<UserProfileDTO> GetUserProfile(int id);
         Task EditUserProfile(int id, EditUserDTO editUserDTO);
         Task AddPicture(int id, IFormFile image);
-        Task<byte[]> GetPicture(int id);
     }
 }

@@ -42,26 +42,15 @@ namespace WebShop.Controllers
             return Ok();
         }
 
-        [HttpPut("AddImage")]
+        [HttpPut("AddPicture")]
         [Authorize]
-        public async Task<IActionResult> AddPicture(IFormFile image)
+        public async Task<IActionResult> AddPicture([FromForm] IFormFile image)
         {
             if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int userId))
                 throw new BadRequestException("Error occured with ID. Please try again.");
 
             await _userService.AddPicture(userId, image);
             return Ok();
-        }
-
-        [HttpGet("GetPicture")]
-        [Authorize]
-        public async Task<ActionResult> GetPicture()
-        {
-            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int userId))
-                throw new BadRequestException("Error occured with ID. Please try again.");
-
-            byte[] image = await _userService.GetPicture(userId);
-            return File(image, "image/*");
         }
     }
 }

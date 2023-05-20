@@ -1,12 +1,15 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    text-align: center;
-  }
-  
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 20px;
+  position: absolute;
+  margin-left: 600px;
+  top: 100px;
+  left: 50px;
+}
+
   .input {
     margin-bottom: 10px;
     width: 440px;
@@ -49,11 +52,77 @@
   .button:hover {
     background-color: #ff5a5a;
   }
-  
+
   .title {
     font-size: 24px;
     font-weight: bold;
     font-family: "Comic Sans MS", cursive;
     margin-bottom: 20px;
-    margin-left: 10px;
+  }
+
+  .pictureContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+    margin-top: 30px;
+    margin-left: 80px;
+    width: 30%;
+  }
+  
+  .picture {
+    width: 300px;
+    height: 300px;  
+    object-fit: cover;
+  }
+  
+  .uploadButton {
+    width: 300px;
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .uploadButton:hover {
+    background-color: #ff5a5a;
+  }
+
+  .pictureForm{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pictureInputField {
+    width: 300px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid black;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .pictureButton {
+    width: 300px;
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 15px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .pictureButton:hover {
+    background-color: #ff5a5a;
   }
