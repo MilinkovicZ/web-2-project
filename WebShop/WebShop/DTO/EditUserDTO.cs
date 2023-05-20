@@ -17,7 +17,7 @@ namespace WebShop.DTO
         [Required]
         public string Password { get; set; } = null!;
         [MaxLength(30)]
-        public string NewPassword { get; set; } = null!;
+        public string? NewPassword { get; set; }
         [MaxLength(30)]
         [Required]
         public string FullName { get; set; } = null!;

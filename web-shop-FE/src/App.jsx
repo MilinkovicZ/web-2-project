@@ -1,22 +1,25 @@
 import React, { useContext } from 'react'
 import Login from './components/Login/Login.jsx'
 import Register from './components/Register/Register.jsx'
-import { Route, Routes, Link, useNavigate } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import Dashboard from './components/Dashboard/Dashboard.jsx'
 import AuthContext from './store/authContext.jsx'
+import Header from './components/Header/Header.jsx'
+import Profile from './components/Profile/Profile.jsx'
 
-function App() {  
-  const navigator = useNavigate();
+function App() {
   const context = useContext(AuthContext);
   const token = context.token;
   const role = context.type;
 
   return (
     <React.Fragment>
+      <Header/>
       <Routes>
-        <Route path='/' element={!role ? <Login/> : navigator("/dashboard")}/>
-        <Route path='/register' element={!role ? <Register/> : navigator("/dashboard")}/>
-        <Route path="/dashboard" element={role ? <Dashboard userType={role} /> : <h1>You don't have access to this page, please <Link to="/">login</Link> first!</h1>}/>
+        <Route path='/' element={!role ? <Login/> : <Navigate to="/dashboard"/>}/>
+        <Route path='/register' element={!role ? <Register/> : <Navigate to="/dashboard"/>}/>
+        <Route path="/dashboard" element={role ? <Dashboard userType={role} /> : <Navigate to="/"/>}/>
+        <Route path="/editProfile" element={role ? <Profile/> : <Navigate to="/"/>}/>
       </Routes>
     </React.Fragment>
   )

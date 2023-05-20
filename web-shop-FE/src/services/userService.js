@@ -1,5 +1,4 @@
 import API from '../api/api.js'
-import axios from 'axios';
 
 const register = async (registerValues) => {
     await API.post('Auth/Register', registerValues);
@@ -22,7 +21,14 @@ const getProfile = async () => {
   };
 
 const editProfile = async (editProfileValues) => {
-    await API.put('User/EditProfile', editProfileValues);
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };    
+  
+    const response = await API.put('User/EditProfile', editProfileValues, config);
 }
 
 export default{

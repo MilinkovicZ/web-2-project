@@ -80,12 +80,18 @@ const Profile = () => {
       return;
     }
 
+    if (!editValues.password) {
+      alert('Password is reqired');
+      return;
+    }
+
     try {
       await userService.editProfile(editValues);
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
-      if (error.response) 
-      alert(error.response.data.Exception);
+      if (error.response) {
+        alert(error.response.data.Exception)
+      }
     }
   };
 
@@ -99,6 +105,14 @@ const Profile = () => {
             type="text"
             value={editValues.username}
             onChange={(e) => setEditValues({ ...editValues, username: e.target.value })}
+            className={classes.inputField}
+          />
+        </div>
+        <div className={classes.input}>
+          <label className={classes.label}>New Password:</label>
+          <input
+            type="password"
+            onChange={(e) => setEditValues({ ...editValues, newPassword: e.target.value })}
             className={classes.inputField}
           />
         </div>
@@ -139,10 +153,12 @@ const Profile = () => {
           />
         </div>
         <div className={classes.input}>
-          <label className={classes.label}>Enter Your Password:</label>
+          <label className={classes.labelPassword}>Enter Your Password:</label>
           <input
             type="password"
             id="password"
+            className={classes.inputField}
+            onChange={(e) => setEditValues({ ...editValues, password: e.target.value })}
           />
         </div>
         <button type="submit" className={classes.button}>

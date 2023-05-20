@@ -25,20 +25,49 @@
     align-items: center;
   }
   
-  .editButton,
   .logoutButton {
     background-color: red;
     color: white;
     border: none;
     border-radius: 20%;
-    padding: 10px;
+    padding: 12px;
+    width: 120px;
     margin: 0 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, opacity 0.3s ease;
   }
-  
-  .editButton:hover,
+    
   .logoutButton:hover {
     background-color: rgba(255, 0, 0, 0.8);
     opacity: 0.8;
+  }
+
+  .link {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 20%;
+    padding: 12px;
+    margin: 0 5px;
+    width: 120px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Add this property to center the text */
+    font-size: 14px; /* Adjust the font size as needed */
+  }
+  
+  .link:hover {
+    background-color: rgba(255, 0, 0, 0.8);
+    opacity: 0.8;
+  }
+  
+  .link:focus {
+    outline: none;
+  }
+  
+  .link:active {
+    transform: translateY(1px);
   }
