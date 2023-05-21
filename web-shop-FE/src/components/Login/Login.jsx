@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
-import classes from './Login.module.css';
-import { Link } from 'react-router-dom';
-import AuthContext from '../../store/authContext';
+import React, { useContext, useState } from "react";
+import classes from "./Login.module.css";
+import { Link } from "react-router-dom";
+import AuthContext from "../../store/authContext";
 
 const Login = () => {
   const authContext = useContext(AuthContext);
@@ -39,22 +39,30 @@ const Login = () => {
         <h1 className={classes.title}>Welcome to Web Shop!</h1>
         <form onSubmit={handleSubmit}>
           <div className={classes.input}>
-            <label htmlFor="email" className={classes.label}>Email</label>
+            <label htmlFor="email" className={classes.label}>
+              Email
+            </label>
             <input
               type="text"
               id="email"
               value={loginValues.email}
-              onChange={(event) => setLoginValues({ ...loginValues, email: event.target.value })}
+              onChange={(event) =>
+                setLoginValues({ ...loginValues, email: event.target.value })
+              }
               className={classes.inputField}
             />
           </div>
           <div className={classes.input}>
-            <label htmlFor="password" className={classes.label}>Password:</label>
+            <label htmlFor="password" className={classes.label}>
+              Password:
+            </label>
             <input
               type="password"
               id="password"
               value={loginValues.password}
-              onChange={(event) => setLoginValues({ ...loginValues, password: event.target.value })}
+              onChange={(event) =>
+                setLoginValues({ ...loginValues, password: event.target.value })
+              }
               className={classes.inputField}
             />
           </div>
@@ -62,8 +70,7 @@ const Login = () => {
             Login
           </button>
           <p>
-            Don't have an account?{' '}
-            <Link to="/register"> Register here.</Link>
+            Don't have an account? <Link to="/register"> Register here.</Link>
           </p>
         </form>
       </div>

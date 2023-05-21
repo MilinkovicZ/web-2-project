@@ -1,0 +1,44 @@
+.userInfo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 5px;
+}
+
+.userInfo p {
+  margin: 0;
+  margin-bottom: 5px;
+  margin-right: 8px;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.verifyButton {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: auto;
+  height: 23px;
+}
+
+.declineButton {
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: auto;
+  height: 23px;
+}
+
+.declineButton:hover {
+  opacity: 0.6;
+}
+
+.verifyButton:hover {
+  opacity: 0.8;
+}

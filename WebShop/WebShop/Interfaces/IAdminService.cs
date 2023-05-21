@@ -6,9 +6,9 @@ namespace WebShop.Interfaces
 {
     public interface IAdminService
     {
-        Task<List<User>> GetAllVerified();
-        Task<List<User>> GetAllUnverified();
-        Task VerifyUser(UserVerifyDTO userVerifyDTO);
-        Task<List<Order>> GetAllOrders();
+        Task<List<User>> GetAllVerified(int adminId);
+        Task<List<User>> GetAllUnverified(int adminId);
+        Task VerifyUser(UserVerifyDTO userVerifyDTO, int adminId);
+        Task<List<OrderDTO>> GetAllOrders(int adminId);
     }
 }

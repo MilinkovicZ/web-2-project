@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import classes from './Register.module.css';
-import userService from '../../services/userService';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import classes from "./Register.module.css";
+import userService from "../../services/userService";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const navigator = useNavigate();
 
   const [registerValues, setRegisterValues] = useState({
-    username: '',
-    email: '',
-    password: '',
-    fullName: '',
-    birthDate: '',
-    address: '',
+    username: "",
+    email: "",
+    password: "",
+    fullName: "",
+    birthDate: "",
+    address: "",
     userType: 0,
   });
 
@@ -20,53 +20,53 @@ const Register = () => {
     e.preventDefault();
 
     if (!registerValues.username) {
-      alert('Username is required');
+      alert("Username is required");
       return;
     }
 
     const usernameRegex = /^[a-zA-Z0-9]+$/;
     if (!usernameRegex.test(registerValues.username)) {
-      alert('Invalid username format');
+      alert("Invalid username format");
       return;
     }
 
     if (!registerValues.email) {
-      alert('Email is required');
+      alert("Email is required");
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(registerValues.email)) {
-      alert('Invalid email format');
+      alert("Invalid email format");
       return;
     }
 
     if (!registerValues.password) {
-      alert('Password is required');
+      alert("Password is required");
       return;
     }
 
     if (!registerValues.fullName) {
-      alert('Full name is required');
+      alert("Full name is required");
       return;
     }
 
     if (!registerValues.birthDate) {
-      alert('Birth date is required');
+      alert("Birth date is required");
       return;
     }
 
     if (!registerValues.address) {
-      alert('Address is required');
+      alert("Address is required");
       return;
     }
 
     try {
-        await userService.register(registerValues);
-        navigator('/')
+      await userService.register(registerValues);
+      navigator("/");
     } catch (error) {
-        if (error.response)
-        alert(error.response.data.Exception)
+      if (error.response) 
+        alert(error.response.data.Exception);
     }
   };
 
@@ -76,71 +76,120 @@ const Register = () => {
         <h1 className={classes.title}>Register</h1>
         <form onSubmit={handleSubmit}>
           <div className={classes.input}>
-            <label htmlFor="username" className={classes.label}>Username</label>
+            <label htmlFor="username" className={classes.label}>
+              Username
+            </label>
             <input
               type="text"
               id="username"
               value={registerValues.username}
-              onChange={(event) => setRegisterValues({ ...registerValues, username: event.target.value })}
+              onChange={(event) =>
+                setRegisterValues({
+                  ...registerValues,
+                  username: event.target.value,
+                })
+              }
               className={classes.inputField}
             />
           </div>
           <div className={classes.input}>
-            <label htmlFor="email" className={classes.label}>Email</label>
+            <label htmlFor="email" className={classes.label}>
+              Email
+            </label>
             <input
               type="text"
               id="email"
               value={registerValues.email}
-              onChange={(event) => setRegisterValues({ ...registerValues, email: event.target.value })}
+              onChange={(event) =>
+                setRegisterValues({
+                  ...registerValues,
+                  email: event.target.value,
+                })
+              }
               className={classes.inputField}
             />
           </div>
           <div className={classes.input}>
-            <label htmlFor="password" className={classes.label}>Password</label>
+            <label htmlFor="password" className={classes.label}>
+              Password
+            </label>
             <input
               type="password"
               id="password"
               value={registerValues.password}
-              onChange={(event) => setRegisterValues({ ...registerValues, password: event.target.value })}
+              onChange={(event) =>
+                setRegisterValues({
+                  ...registerValues,
+                  password: event.target.value,
+                })
+              }
               className={classes.inputField}
             />
           </div>
           <div className={classes.input}>
-            <label htmlFor="fullName" className={classes.label}>Full Name</label>
+            <label htmlFor="fullName" className={classes.label}>
+              Full Name
+            </label>
             <input
               type="text"
               id="fullName"
               value={registerValues.fullName}
-              onChange={(event) => setRegisterValues({ ...registerValues, fullName: event.target.value })}
+              onChange={(event) =>
+                setRegisterValues({
+                  ...registerValues,
+                  fullName: event.target.value,
+                })
+              }
               className={classes.inputField}
             />
           </div>
           <div className={classes.input}>
-            <label htmlFor="birthDate" className={classes.label}>Birth Date</label>
+            <label htmlFor="birthDate" className={classes.label}>
+              Birth Date
+            </label>
             <input
               type="date"
               id="birthDate"
               value={registerValues.birthDate}
-              onChange={(event) => setRegisterValues({ ...registerValues, birthDate: event.target.value })}
+              onChange={(event) =>
+                setRegisterValues({
+                  ...registerValues,
+                  birthDate: event.target.value,
+                })
+              }
               className={classes.inputField}
             />
           </div>
           <div className={classes.input}>
-            <label htmlFor="address" className={classes.label}>Address</label>
+            <label htmlFor="address" className={classes.label}>
+              Address
+            </label>
             <input
               type="text"
               id="address"
               value={registerValues.address}
-              onChange={(event) => setRegisterValues({ ...registerValues, address: event.target.value })}
+              onChange={(event) =>
+                setRegisterValues({
+                  ...registerValues,
+                  address: event.target.value,
+                })
+              }
               className={classes.inputField}
             />
           </div>
           <div className={classes.input}>
-            <label htmlFor="userType" className={classes.label}>User Type</label>
+            <label htmlFor="userType" className={classes.label}>
+              User Type
+            </label>
             <select
               id="userType"
               value={registerValues.userType}
-              onChange={(event) => setRegisterValues({ ...registerValues, userType: event.target.value })}
+              onChange={(event) =>
+                setRegisterValues({
+                  ...registerValues,
+                  userType: event.target.value,
+                })
+              }
               className={classes.inputField}
             >
               <option value="0">Buyer</option>
@@ -151,8 +200,7 @@ const Register = () => {
             Register
           </button>
           <p>
-            Already have an account?{' '}
-            <Link to="/"> Login here.</Link>
+            Already have an account? <Link to="/"> Login here.</Link>
           </p>
         </form>
       </div>

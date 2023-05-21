@@ -22,7 +22,10 @@ namespace WebShop.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllVerified()
         {
-            var users = await _adminService.GetAllVerified();
+            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int adminId))
+                throw new BadRequestException("Error occured with ID. Please try again.");
+
+            var users = await _adminService.GetAllVerified(adminId);
             return Ok(users);
         }
 
@@ -30,7 +33,10 @@ namespace WebShop.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllUnverified()
         {
-            var users = await _adminService.GetAllUnverified();
+            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int adminId))
+                throw new BadRequestException("Error occured with ID. Please try again.");
+
+            var users = await _adminService.GetAllUnverified(adminId);
             return Ok(users);
         }
 
@@ -38,7 +44,10 @@ namespace WebShop.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> VerifyUser(UserVerifyDTO userVerifyDTO)
         {
-            await _adminService.VerifyUser(userVerifyDTO);
+            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int adminId))
+                throw new BadRequestException("Error occured with ID. Please try again.");
+
+            await _adminService.VerifyUser(userVerifyDTO, adminId);
 
             return Ok();
         }
@@ -47,7 +56,10 @@ namespace WebShop.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllOrders()
         {
-            var orders = await _adminService.GetAllOrders();
+            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int adminId))
+                throw new BadRequestException("Error occured with ID. Please try again.");
+
+            var orders = await _adminService.GetAllOrders(adminId);
             return Ok(orders);
         }
     }

@@ -1,20 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import classes from './Profile.module.css';
-import userService from '../../services/userService';
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import classes from "./Profile.module.css";
+import userService from "../../services/userService";
 
 const Profile = () => {
   const navigate = useNavigate();
 
   const [photo, setPhoto] = useState(null);
   const [editValues, setEditValues] = useState({
-    username: '',
-    email: '',
-    fullName: '',
-    birthDate: '',
-    address: '',
-    password: '',
-    newPassword: '',
+    username: "",
+    email: "",
+    fullName: "",
+    birthDate: "",
+    address: "",
+    password: "",
+    newPassword: "",
   });
 
   useEffect(() => {
@@ -26,10 +26,9 @@ const Profile = () => {
           username: user.username,
           email: user.email,
           fullName: user.fullName,
-          birthDate: user.birthDate.split('T')[0],
+          birthDate: user.birthDate.split("T")[0],
           address: user.address,
         });
-
       } catch (error) {
         console.log(error);
       }
@@ -42,53 +41,53 @@ const Profile = () => {
     e.preventDefault();
 
     if (!editValues.username) {
-      alert('Username is required');
+      alert("Username is required");
       return;
     }
 
     const usernameRegex = /^[a-zA-Z0-9]+$/;
     if (!usernameRegex.test(editValues.username)) {
-      alert('Invalid username format');
+      alert("Invalid username format");
       return;
     }
 
     if (!editValues.email) {
-      alert('Email is required');
+      alert("Email is required");
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(editValues.email)) {
-      alert('Invalid email format');
+      alert("Invalid email format");
       return;
     }
 
     if (!editValues.fullName) {
-      alert('Full name is required');
+      alert("Full name is required");
       return;
     }
 
     if (!editValues.birthDate) {
-      alert('Birth date is required');
+      alert("Birth date is required");
       return;
     }
 
     if (!editValues.address) {
-      alert('Address is required');
+      alert("Address is required");
       return;
     }
 
     if (!editValues.password) {
-      alert('Password is reqired');
+      alert("Password is reqired");
       return;
     }
 
     try {
       await userService.editProfile(editValues);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (error) {
       if (error.response) {
-        alert(error.response.data.Exception)
+        alert(error.response.data.Exception);
       }
     }
   };
@@ -99,26 +98,29 @@ const Profile = () => {
     const image = e.target.elements.image.files[0];
 
     if (!image) {
-      alert('No file selected');
+      alert("No file selected");
       return;
     }
 
     const formData = new FormData();
     formData.append("image", image);
-    setPhoto('');
+    setPhoto("");
 
     try {
-      await userService.addPicture(formData);      
+      await userService.addPicture(formData);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
-    <React.Fragment>           
+    <React.Fragment>
       <div className={classes.pictureContainer}>
-        <h2 className={classes.title}>Change picture</h2> 
-        <img className={classes.picture} src={photo ? `data:image/jpg;base64,${photo}` : 'default.jpg'}/>
+        <h2 className={classes.title}>Change picture</h2>
+        <img
+          className={classes.picture}
+          src={photo ? `data:image/jpg;base64,${photo}` : "default.jpg"}
+        />
         <form onSubmit={pictureSubmit} className={classes.pictureForm}>
           <input
             className={classes.pictureInputField}
@@ -126,18 +128,22 @@ const Profile = () => {
             name="image"
             accept="image/*"
           />
-          <button className={classes.pictureButton} type='submit'>Upload photo</button>
-        </form>       
-      </div> 
+          <button className={classes.pictureButton} type="submit">
+            Upload photo
+          </button>
+        </form>
+      </div>
       <div className={classes.formContainer}>
-        <h2 className={classes.title}>Edit profile</h2>      
+        <h2 className={classes.title}>Edit profile</h2>
         <form onSubmit={handleSubmit}>
           <div className={classes.input}>
             <label className={classes.label}>Username:</label>
             <input
               type="text"
               value={editValues.username}
-              onChange={(e) => setEditValues({ ...editValues, username: e.target.value })}
+              onChange={(e) =>
+                setEditValues({ ...editValues, username: e.target.value })
+              }
               className={classes.inputField}
             />
           </div>
@@ -145,7 +151,9 @@ const Profile = () => {
             <label className={classes.label}>New Password:</label>
             <input
               type="password"
-              onChange={(e) => setEditValues({ ...editValues, newPassword: e.target.value })}
+              onChange={(e) =>
+                setEditValues({ ...editValues, newPassword: e.target.value })
+              }
               className={classes.inputField}
             />
           </div>
@@ -154,7 +162,9 @@ const Profile = () => {
             <input
               type="email"
               value={editValues.email}
-              onChange={(e) => setEditValues({ ...editValues, email: e.target.value })}
+              onChange={(e) =>
+                setEditValues({ ...editValues, email: e.target.value })
+              }
               className={classes.inputField}
             />
           </div>
@@ -163,7 +173,9 @@ const Profile = () => {
             <input
               type="text"
               value={editValues.fullName}
-              onChange={(e) => setEditValues({ ...editValues, fullName: e.target.value })}
+              onChange={(e) =>
+                setEditValues({ ...editValues, fullName: e.target.value })
+              }
               className={classes.inputField}
             />
           </div>
@@ -172,7 +184,9 @@ const Profile = () => {
             <input
               type="date"
               value={editValues.birthDate}
-              onChange={(e) => setEditValues({ ...editValues, birthDate: e.target.value })}
+              onChange={(e) =>
+                setEditValues({ ...editValues, birthDate: e.target.value })
+              }
               className={classes.inputField}
             />
           </div>
@@ -181,24 +195,30 @@ const Profile = () => {
             <input
               type="text"
               value={editValues.address}
-              onChange={(e) => setEditValues({ ...editValues, address: e.target.value })}
+              onChange={(e) =>
+                setEditValues({ ...editValues, address: e.target.value })
+              }
               className={classes.inputField}
             />
           </div>
           <div className={classes.input}>
-            <label className={classes.labelPassword}>Enter Your Password:</label>
+            <label className={classes.labelPassword}>
+              Enter Your Password:
+            </label>
             <input
               type="password"
               id="password"
               className={classes.inputField}
-              onChange={(e) => setEditValues({ ...editValues, password: e.target.value })}
+              onChange={(e) =>
+                setEditValues({ ...editValues, password: e.target.value })
+              }
             />
           </div>
           <button type="submit" className={classes.button}>
             Save Changes
           </button>
-          </form>
-      </div>      
+        </form>
+      </div>
     </React.Fragment>
   );
 };
