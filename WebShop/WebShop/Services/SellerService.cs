@@ -41,8 +41,7 @@ namespace WebShop.Services
             if (product == null || product.SellerId != sellerId)
                 throw new NotFoundException($"Unable to find product with ID: {productId}.");
 
-            product.IsDeleted = true;
-            _unitOfWork.ProductsRepository.Update(product);
+            _unitOfWork.ProductsRepository.Delete(product);
             await _unitOfWork.Save();
         }
 

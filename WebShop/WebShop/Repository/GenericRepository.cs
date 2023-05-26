@@ -14,13 +14,12 @@ namespace WebShop.Interfaces
         }
         public async Task<IQueryable<T>> GetAll()
         {
-            var query = entities.Where(x => !x.IsDeleted);
-            return await Task.FromResult(query);
+            return await Task.FromResult(entities);
         }
 
         public async Task<T?> Get(int id)
         {
-            return await entities.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            return await entities.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task Insert(T entity)
@@ -34,8 +33,7 @@ namespace WebShop.Interfaces
         }
         public void Delete(T entity)
         {
-            //entities.Remove(entity);
-            entity.IsDeleted = true;
+            entities.Remove(entity);
         }
     }
 }

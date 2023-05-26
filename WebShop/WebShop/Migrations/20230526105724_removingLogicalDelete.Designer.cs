@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebShop.Context;
 
@@ -11,9 +12,11 @@ using WebShop.Context;
 namespace WebShop.Migrations
 {
     [DbContext(typeof(WebShopDBContext))]
-    partial class WebShopDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230526105724_removingLogicalDelete")]
+    partial class removingLogicalDelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,7 +196,7 @@ namespace WebShop.Migrations
                             BirthDate = new DateTime(200, 8, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "zdravkoAdmin@gmail.com",
                             FullName = "Zdravko Milinkovic",
-                            Password = "$2a$11$pUTr9Hg4dRZYQwGnrAhcIuIlynK0KKX83eZsP/HDjWA/egZWSyKK2",
+                            Password = "$2a$11$DW7Yrjpspo6NSfYZ7ZnIN.BDIpSaELzDnYpJ2RGgNwNAWclCJA6mO",
                             UserType = "Admin",
                             Username = "zdravkoAdmin",
                             VerificationState = "Accepted"
@@ -205,7 +208,7 @@ namespace WebShop.Migrations
                     b.HasOne("WebShop.Models.Order", "Order")
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("WebShop.Models.Product", "Product")
@@ -224,7 +227,7 @@ namespace WebShop.Migrations
                     b.HasOne("WebShop.Models.User", "Buyer")
                         .WithMany("Orders")
                         .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Buyer");
@@ -235,7 +238,7 @@ namespace WebShop.Migrations
                     b.HasOne("WebShop.Models.User", "Seller")
                         .WithMany("Products")
                         .HasForeignKey("SellerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Seller");
