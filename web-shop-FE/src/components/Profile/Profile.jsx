@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import classes from "./Profile.module.css";
 import userService from "../../services/userService";
@@ -118,7 +118,7 @@ const Profile = () => {
       <div className={classes.pictureContainer}>
         <h2 className={classes.title}>Change picture</h2>
         <img
-          className={classes.picture}
+          className={classes.picture} alt='Default'
           src={photo ? `data:image/jpg;base64,${photo}` : "default.jpg"}
         />
         <form onSubmit={pictureSubmit} className={classes.pictureForm}>

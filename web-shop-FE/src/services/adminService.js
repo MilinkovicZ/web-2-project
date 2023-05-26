@@ -63,6 +63,7 @@ const verifyUser = async (verifyUserValues) => {
   }
 };
 
+// eslint-disable-next-line
 export default {
   getVerified,
   getUnverified,

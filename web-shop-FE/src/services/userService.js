@@ -43,6 +43,7 @@ const addPicture = async (image) => {
   await API.put("User/AddPicture", image, config);
 };
 
+// eslint-disable-next-line
 export default {
   register,
   getProfile,

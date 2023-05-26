@@ -5,7 +5,7 @@ const Dashboard = ({ userType }) => {
   return (
     <React.Fragment>
       <h1>DASHBOARD, {userType}</h1>
-      {userType == "Admin" && <Users/>}
+      {userType === "Admin" && <Users/>}
     </React.Fragment>
   );
 };
