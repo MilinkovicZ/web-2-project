@@ -1,0 +1,22 @@
+.ordersContainer {
+  margin-right: 20px;
+  background-color: lightblue;
+  width: 500px;
+  padding: 10px;
+}
+
+.title {
+  font-family: "Comic Sans MS", cursive;
+  font-size: 28px;
+  margin-top: 0px;
+  text-align: center;
+}
+
+.orderContainer {
+  border: 1px solid Red;
+  border-radius: 20px;
+  padding: 20px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+  margin-bottom: 10px;
+}

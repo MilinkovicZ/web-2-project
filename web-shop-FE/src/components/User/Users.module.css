@@ -1,10 +1,7 @@
 .usersContainer {
   display: grid;
-  gap: 1px;
   background-color: #ffcccc;
   padding: 10px;
-  width: 700px;
-  text-align: center;
   margin-left: 20px;
   grid-template-columns: minmax(320px, 1fr) minmax(320px, 1fr);
   grid-column-gap: 30px;
@@ -25,5 +22,6 @@
   font-family: "Comic Sans MS", cursive;
   font-size: 28px;
   margin-top: 0px;
-  margin-bottom: 8px;
+  margin-bottom: 8px;  
+  text-align: center;
 }

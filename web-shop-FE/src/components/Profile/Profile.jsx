@@ -104,10 +104,10 @@ const Profile = () => {
 
     const formData = new FormData();
     formData.append("image", image);
-    setPhoto("");
-
+    
     try {
-      await userService.addPicture(formData);
+      await userService.addPicture(formData);      
+      setPhoto("");
     } catch (error) {
       console.log(error);
     }

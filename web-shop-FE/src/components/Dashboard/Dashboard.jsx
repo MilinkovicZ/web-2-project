@@ -1,12 +1,14 @@
 import React from "react";
 import Users from "../User/Users";
+import Orders from "../Order/Orders";
+import classes from "./Dashboard.module.css"
 
 const Dashboard = ({ userType }) => {
   return (
-    <React.Fragment>
-      <h1>DASHBOARD, {userType}</h1>
+    <div className={classes.container}>
       {userType === "Admin" && <Users/>}
-    </React.Fragment>
+      {userType === "Admin" && <Orders/>}
+    </div>
   );
 };
 

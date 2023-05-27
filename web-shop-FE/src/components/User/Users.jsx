@@ -8,32 +8,33 @@ const Users = () => {
   const [unverifiedUsers, setUnverifiedUsers] = useState([]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const allVerified = await adminService.getVerified();
-        const allUnverified = await adminService.getUnverified();
-        setVerifiedUsers(allVerified);
-        setUnverifiedUsers(allUnverified);
-      } catch (error) {
-        if (error.response) 
-          alert(error.response.data.Exception);
-      }
-    };
-
     fetchUsers();
   }, []);
 
-  const acceptUserHandler = (userId) => {
-    verifyUserHandler({id: userId, verificationState: 1});
+  const fetchUsers = async () => {
+    try {
+      const allVerified = await adminService.getVerified();
+      const allUnverified = await adminService.getUnverified();
+      setVerifiedUsers(allVerified);
+      setUnverifiedUsers(allUnverified);
+    } catch (error) {
+      if (error.response) 
+        alert(error.response.data.Exception);
+    }
+  };
+
+  const acceptUserHandler = async (userId) => {
+    await verifyUserHandler({id: userId, verificationState: 1});
   }
 
-  const declineUserHandler = (userId) => {    
-    verifyUserHandler({id: userId, verificationState: 2});
+  const declineUserHandler = async (userId) => {    
+    await verifyUserHandler({id: userId, verificationState: 2});
   }
 
   const verifyUserHandler = async (data) => {
     try {
       await adminService.verifyUser(data);
+      fetchUsers();
     } catch (error) {
       if (error.response) 
         alert(error.response.data.Exception);
