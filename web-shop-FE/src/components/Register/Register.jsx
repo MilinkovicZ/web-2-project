@@ -10,6 +10,7 @@ const Register = () => {
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
     fullName: "",
     birthDate: "",
     address: "",
@@ -46,6 +47,11 @@ const Register = () => {
       return;
     }
 
+    if (!registerValues.confirmPassword) {
+      alert("You have to confirm password");
+      return;
+    }
+
     if (!registerValues.fullName) {
       alert("Full name is required");
       return;
@@ -61,12 +67,16 @@ const Register = () => {
       return;
     }
 
+    if (registerValues.confirmPassword !== registerValues.password) {
+      alert("Password are not matching. Try again");
+      return;
+    }
+
     try {
       await userService.register(registerValues);
       navigator("/");
     } catch (error) {
-      if (error.response) 
-        alert(error.response.data.Exception);
+      if (error.response) alert(error.response.data.Exception);
     }
   };
 
@@ -121,6 +131,23 @@ const Register = () => {
                 setRegisterValues({
                   ...registerValues,
                   password: event.target.value,
+                })
+              }
+              className={classes.inputField}
+            />
+          </div>
+          <div className={classes.input}>
+            <label htmlFor="confirmPassword" className={classes.label}>
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              value={registerValues.confirmPassword}
+              onChange={(event) =>
+                setRegisterValues({
+                  ...registerValues,
+                  confirmPassword: event.target.value,
                 })
               }
               className={classes.inputField}

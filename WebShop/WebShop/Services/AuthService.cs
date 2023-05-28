@@ -16,13 +16,11 @@ namespace WebShop.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _configuration;
-        private readonly IMapper _mapper;
         private readonly IMailService _mailService;
-        public AuthService(IUnitOfWork unitOfWork, IConfiguration configuration, IMapper mapper, IMailService mailService)
+        public AuthService(IUnitOfWork unitOfWork, IConfiguration configuration, IMailService mailService)
         {
             _unitOfWork = unitOfWork;
             _configuration = configuration;
-            _mapper = mapper;
             _mailService = mailService;
         }
 
@@ -82,9 +80,21 @@ namespace WebShop.Services
             if (existingUsername != null)
                 throw new BadRequestException("User with this username is already registered");
 
+            if (userRegisterDTO.Password != userRegisterDTO.ConfirmPassword)
+                throw new BadRequestException("Password are not matching. Please try again");
+
             userRegisterDTO.Password = BCrypt.Net.BCrypt.HashPassword(userRegisterDTO.Password);
 
-            var newUser = _mapper.Map<User>(userRegisterDTO);
+            var newUser = new User
+            {
+                Username = userRegisterDTO.Username,
+                Email = userRegisterDTO.Email,
+                Password = userRegisterDTO.Password,
+                FullName = userRegisterDTO.FullName,
+                BirthDate = userRegisterDTO.BirthDate,
+                Address = userRegisterDTO.Address,
+                UserType = userRegisterDTO.UserType
+            };
 
             if (newUser.UserType == UserType.Admin)
                 throw new UnauthorizedException("Admin can't be registered!");
