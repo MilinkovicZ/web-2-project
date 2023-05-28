@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebShop.Enums;
+
 namespace WebShop.DTO
 {
     public class CreateOrderDTO
@@ -17,5 +19,8 @@ namespace WebShop.DTO
         public string? Comment { get; set; }
         [Required]
         public int Id { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime DeliveryTime { get; set; }
+        public OrderState OrderState { get; set; }
     }
 }

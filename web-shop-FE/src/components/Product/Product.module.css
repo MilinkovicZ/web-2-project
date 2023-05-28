@@ -1,0 +1,93 @@
+.productItem {
+  text-align: center;
+  width: 300px;
+  margin-top: 10px;
+  margin-left: 30px;
+  position: relative;
+}
+
+.namePriceContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+}
+
+.productItem h3 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.productItem .price {
+  font-weight: bold;
+  margin: 0;  
+}
+
+.productItem .picture {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  margin-top: 12px;
+}
+
+.productItem .amount {
+  margin-top: 12px;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: right;
+}
+
+.description {
+  display: none;
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  color: white;
+  text-align: left;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 16px;
+}
+
+.productItem:hover .description {
+  display: block;
+}
+
+.productItem .deleteButton {
+  position: absolute;
+  border: 0.5px solid black;
+  top: 42px;
+  right: 0px;
+  font-size: 30px;  
+  width: 35px;
+  height: 35px;
+  background-color: red;
+  color: white;
+}
+
+.productItem .deleteButton:hover {
+  background-color: darkred;
+  color: black
+}
+
+.productItem .updateButton {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  background-color: green;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.productItem .updateButton:hover {
+  background-color: lightgreen;
+}
+
+.productItem:hover .updateButton {
+  display: block;
+}

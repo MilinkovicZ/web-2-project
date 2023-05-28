@@ -1,6 +1,26 @@
-.container {
+.linkContainer {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: flex-start;
-  margin-top: 30px;
+  margin-top: 300px;
+}
+
+.link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: green;
+  color: white;
+  font-size: 24px;
+  text-decoration: none;
+  margin: 0 30px;
+}
+
+.link:hover {
+  background-color: gray;
+  opacity: 0.8;
+  cursor: pointer;
 }

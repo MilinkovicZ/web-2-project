@@ -19,6 +19,17 @@ namespace WebShop.Controllers
             _sellerService = sellerService;
         }
 
+        [HttpGet("GetProduct/{id}")]
+        [Authorize(Roles = "Seller")]
+        public async Task<IActionResult> GetProduct(int id)
+        {
+            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int sellerId))
+                throw new BadRequestException("Error occured with ID. Please try again.");
+
+            var product = await _sellerService.GetProduct(id, sellerId);
+            return Ok(product);
+        }
+
         [HttpGet("GetProducts")]
         [Authorize(Roles = "Seller")]
         public async Task<IActionResult> GetAllProducts()
@@ -54,7 +65,7 @@ namespace WebShop.Controllers
 
         [HttpPost("CreateProduct")]
         [Authorize(Roles = "Seller")]
-        public async Task<IActionResult> CreateNewProduct(CreateProductDTO productDTO)
+        public async Task<IActionResult> CreateNewProduct([FromForm]CreateProductDTO productDTO)
         {
             if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int sellerId))
                 throw new BadRequestException("Error occured with ID. Please try again.");
@@ -76,23 +87,12 @@ namespace WebShop.Controllers
 
         [HttpPut("UpdateProduct/{id}")]
         [Authorize(Roles = "Seller")]
-        public async Task<IActionResult> UpdateProduct(int id, CreateProductDTO productDTO)
+        public async Task<IActionResult> UpdateProduct(int id, [FromForm]CreateProductDTO productDTO)
         {
             if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int sellerId))
                 throw new BadRequestException("Error occured with ID. Please try again.");
 
             await _sellerService.UpdateProduct(id, productDTO, sellerId);
-            return Ok();
-        }
-
-        [HttpPut("AddProductImage/{id}")]
-        [Authorize]
-        public async Task<IActionResult> AddProductPicture(int id, IFormFile image)
-        {
-            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int sellerId))
-                throw new BadRequestException("Error occured with ID. Please try again.");
-
-            await _sellerService.AddProductPicture(id, image, sellerId);
             return Ok();
         }
     }

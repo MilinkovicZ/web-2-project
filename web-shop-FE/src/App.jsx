@@ -6,6 +6,11 @@ import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import AuthContext from "./store/authContext.jsx";
 import Header from "./components/Header/Header.jsx";
 import Profile from "./components/Profile/Profile.jsx";
+import Products from "./components/Product/Products.jsx";
+import Users from "./components/User/Users.jsx";
+import Orders from "./components/Order/Orders.jsx";
+import CreateProduct from "./components/Product/CreateProduct.jsx"
+import UpdateProduct from "./components/Product/UpdateProduct.jsx";
 
 function App() {
   const context = useContext(AuthContext);
@@ -18,11 +23,11 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={!role ? <Login /> : <Navigate to="/dashboard" />}
+          element={!token ? <Login /> : <Navigate to="/dashboard" />}
         />
         <Route
           path="/register"
-          element={!role ? <Register /> : <Navigate to="/dashboard" />}
+          element={!token ? <Register /> : <Navigate to="/dashboard" />}
         />
         <Route
           path="/dashboard"
@@ -31,6 +36,30 @@ function App() {
         <Route
           path="/editProfile"
           element={role ? <Profile /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/users"
+          element={role === "Admin" ? <Users/> : <Navigate to="/dashboard"/>}
+        />
+        <Route
+          path="/orders"
+          element={role === "Admin" ? <Orders userType="Admin" /> : <Navigate to="/dashboard"/>}
+        />        
+        <Route
+          path="/orders_seller"
+          element={role === "Seller" ? <Orders userType="Seller" /> : <Navigate to="/dashboard"/>}
+        />
+        <Route
+          path="/products"
+          element={role === "Seller" ? <Products/> : <Navigate to="/dashboard"/>}
+        />
+        <Route
+          path="/create_new_product"
+          element={role === "Seller" ? <CreateProduct/> : <Navigate to="/dashboard"/>}
+        />
+        <Route
+          path="/update_product/:id"
+          element={role === "Seller" ? <UpdateProduct/> : <Navigate to="/dashboard"/>}
         />
       </Routes>
     </React.Fragment>

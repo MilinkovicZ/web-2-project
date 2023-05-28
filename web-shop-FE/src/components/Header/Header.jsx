@@ -18,14 +18,13 @@ const Header = () => {
           Edit Profile
         </Link>
       );
-    } else if (location.pathname === '/editProfile') {
+    } else {
       return (
         <Link to="/dashboard" className={classes.link}>
           Dashboard
         </Link>
       );
     }
-    return null;
   }
 
   return (

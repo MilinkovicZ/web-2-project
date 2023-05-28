@@ -1,44 +1,44 @@
-.userInfo {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 5px;
+.userTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
 }
 
-.userInfo p {
-  margin: 0;
-  margin-bottom: 5px;
-  margin-right: 8px;
+.userTable td {
+  padding: 8px;
+  border-bottom: 1px dotted black;
 }
 
-.label {
+.userTable tr:last-child td {
+  border-bottom: none;
+}
+
+.userTable .label {
   font-weight: bold;
+  color: #555555;
 }
 
-.verifyButton {
-  background-color: #4caf50;
+.userTable .verifyButton {
+  margin-right: 5px;
+  background-color: #4CAF50;
   color: white;
   border: none;
-  border-radius: 5px;
+  padding: 8px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
   cursor: pointer;
-  margin-left: auto;
-  height: 23px;
+  border-radius: 4px;
 }
 
-.declineButton {
-  background-color: red;
+.userTable .declineButton {
+  background-color: #f44336;
   color: white;
   border: none;
-  border-radius: 5px;
+  padding: 8px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
   cursor: pointer;
-  margin-left: auto;
-  height: 23px;
-}
-
-.declineButton:hover {
-  opacity: 0.6;
-}
-
-.verifyButton:hover {
-  opacity: 0.8;
+  border-radius: 4px;
 }

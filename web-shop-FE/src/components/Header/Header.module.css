@@ -1,10 +1,11 @@
 .header {
-    background-color: grey;
+    background-color: transparent;
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px;
+    border-bottom: 2px solid black;
   }
   
   .logo {
@@ -55,8 +56,8 @@
     text-decoration: none;
     display: flex;
     align-items: center;
-    justify-content: center; /* Add this property to center the text */
-    font-size: 14px; /* Adjust the font size as needed */
+    justify-content: center;
+    font-size: 14px;
   }
   
   .link:hover {

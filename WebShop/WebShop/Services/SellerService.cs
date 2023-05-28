@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration.Annotations;
 using MailKit.Search;
 using Microsoft.EntityFrameworkCore;
 using WebShop.DTO;
@@ -6,6 +7,7 @@ using WebShop.Enums;
 using WebShop.Exceptions;
 using WebShop.Interfaces;
 using WebShop.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WebShop.Services
 {
@@ -24,8 +26,24 @@ namespace WebShop.Services
             if (seller == null)
                 throw new UnauthorizedException($"Unable to find user with ID: {sellerId}.");
 
+            var products = await _unitOfWork.ProductsRepository.GetAll();
+            var existingProduct = products.FirstOrDefault(x => x.Name == productDTO.Name);
+            if (existingProduct != null)
+                throw new BadRequestException($"There is already product: {productDTO.Name}");
+
             var product = _mapper.Map<Product>(productDTO);
             product.SellerId = sellerId;
+
+            if(productDTO.ImageForm != null)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    productDTO.ImageForm.CopyTo(ms);
+                    var imageBytes = ms.ToArray();
+
+                    product.Image = imageBytes;
+                }
+            }
 
             await _unitOfWork.ProductsRepository.Insert(product);
             await _unitOfWork.Save();
@@ -55,7 +73,24 @@ namespace WebShop.Services
             if (product == null || product.SellerId != sellerId)
                 throw new NotFoundException($"Unable to find product with ID: {productId}.");
 
+            var products = await _unitOfWork.ProductsRepository.GetAll();
+            var existingProduct = products.FirstOrDefault(x => x.Name == productDTO.Name);
+            if (existingProduct != null && product.Name != productDTO.Name)
+                throw new BadRequestException($"There is already product: {productDTO.Name}");
+
+
             _mapper.Map(productDTO, product);
+
+            if (productDTO.ImageForm != null)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    productDTO.ImageForm.CopyTo(ms);
+                    var imageBytes = ms.ToArray();
+
+                    product.Image = imageBytes;
+                }
+            }
 
             _unitOfWork.ProductsRepository.Update(product);
             await _unitOfWork.Save();
@@ -86,6 +121,19 @@ namespace WebShop.Services
             return _mapper.Map<List<OrderDTO>>(sellerOrders);
         }
 
+        public async Task<ProductDTO> GetProduct(int productId, int sellerId)
+        {
+            User? seller = await _unitOfWork.UsersRepository.Get(sellerId);
+            if (seller == null)
+                throw new UnauthorizedException($"Unable to find user with ID: {sellerId}.");
+
+            Product? product = await _unitOfWork.ProductsRepository.Get(productId);
+            if (product == null)
+                throw new NotFoundException($"Unable to find product with ID: {productId}.");
+
+            return _mapper.Map<ProductDTO>(product);
+        }
+
         public async Task<List<ProductDTO>> GetAllProducts(int sellerId)
         {
             User? seller = await _unitOfWork.UsersRepository.Get(sellerId);
@@ -95,28 +143,6 @@ namespace WebShop.Services
             var products = await _unitOfWork.ProductsRepository.GetAll();
             List<Product> sellerProducts = products.Where(x => x.SellerId == sellerId).ToList();
             return _mapper.Map<List<ProductDTO>>(sellerProducts);
-        }
-
-        public async Task AddProductPicture(int productId, IFormFile image, int sellerId)
-        {
-            User? seller = await _unitOfWork.UsersRepository.Get(sellerId);
-            if (seller == null)
-                throw new UnauthorizedException($"Unable to find user with ID: {sellerId}.");
-
-            Product? product = await _unitOfWork.ProductsRepository.Get(productId);
-            if (product == null || product.SellerId != sellerId)
-                throw new NotFoundException($"Unable to find product with ID: {productId}.");
-
-            using (var ms = new MemoryStream())
-            {
-                image.CopyTo(ms);
-                var imageBytes = ms.ToArray();
-
-                product.Image = imageBytes;
-                _unitOfWork.ProductsRepository.Update(product);
-            }
-
-            await _unitOfWork.Save();
-        }
+        }      
     }
 }

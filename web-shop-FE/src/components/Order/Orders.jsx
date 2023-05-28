@@ -1,19 +1,39 @@
 import React, { useEffect, useState } from "react";
 import Order from "./Order";
 import adminService from "../../services/adminService";
+import sellerService from "../../services/sellerService";
 import classes from "./Orders.module.css";
 
-const Orders = () => {
+const Orders = ({ userType }) => {
   const [orders, setOrders] = useState([]);
+  const [newOrders, setNewOrders] = useState(userType === "Seller" ? [] : null);
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    console.log(userType);
+    if (userType === "Admin") {
+      fetchAdminOrders();
+    } else if (userType === "Seller") {
+      fetchSellerOrders();
+    }
+  }, [userType]);
 
-  const fetchOrders = async () => {
+  const fetchAdminOrders = async () => {
     try {
       const allOrders = await adminService.getOrders();
       setOrders(allOrders);
+    } catch (error) {
+      if (error.response) {
+        alert(error.response.data.Exception);
+      }
+    }
+  };
+
+  const fetchSellerOrders = async () => {
+    try {
+      const allOrders = await sellerService.getOrders();
+      const newSellerOrders = await sellerService.getNewOrders();
+      setOrders(allOrders);
+      setNewOrders(newSellerOrders);
     } catch (error) {
       if (error.response) {
         alert(error.response.data.Exception);
@@ -26,11 +46,19 @@ const Orders = () => {
       <h1 className={classes.title}>All Orders</h1>
       {orders.map((order) => (
         <div className={classes.orderContainer} key={order.id}>
-          <Order order={order} />
+          <Order order={order} userType={userType} />
         </div>
       ))}
+      <h1 className={classes.title}>New Orders</h1>
+      {userType === "Seller" &&
+        newOrders !== null &&
+        newOrders.map((order) => (
+          <div className={classes.orderContainer} key={order.id}>
+            <Order order={order} userType={userType}/>
+          </div>
+        ))}
     </div>
   );
 };
 
-export default Orders
+export default Orders;

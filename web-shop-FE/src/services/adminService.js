@@ -49,18 +49,14 @@ const getOrders = async () => {
 };
 
 const verifyUser = async (verifyUserValues) => {
-  try {
-    const token = localStorage.getItem("token");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+  const token = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
-    await API.post("Admin/VerifyUser", verifyUserValues, config);    
-  } catch (error) {
-    console.log(error);
-  }
+  await API.post("Admin/VerifyUser", verifyUserValues, config);
 };
 
 // eslint-disable-next-line
@@ -68,5 +64,5 @@ export default {
   getVerified,
   getUnverified,
   getOrders,
-  verifyUser
-}
+  verifyUser,
+};

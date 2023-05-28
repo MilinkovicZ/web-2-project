@@ -1,8 +1,9 @@
 .ordersContainer {
   margin-right: 20px;
-  background-color: lightblue;
   width: 500px;
-  padding: 10px;
+  padding: 10px;  
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .title {

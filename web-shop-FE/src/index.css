@@ -8,5 +8,7 @@ html {
 
 body {
   margin: 0;
-  background-color: lightgray;
+  background-image: url("../public/background.jpg");
+  background-size: cover;
+  background-position: center;
 }
