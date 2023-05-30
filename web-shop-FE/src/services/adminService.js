@@ -2,14 +2,7 @@ import API from "../api/api.js";
 
 const getVerified = async () => {
   try {
-    const token = localStorage.getItem("token");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const response = await API.get("Admin/GetVerified", config);
+    const response = await API.get("Admin/GetVerified");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -18,14 +11,7 @@ const getVerified = async () => {
 
 const getUnverified = async () => {
   try {
-    const token = localStorage.getItem("token");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const response = await API.get("Admin/GetUnverified", config);
+    const response = await API.get("Admin/GetUnverified");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -34,14 +20,7 @@ const getUnverified = async () => {
 
 const getOrders = async () => {
   try {
-    const token = localStorage.getItem("token");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const response = await API.get("Admin/GetOrders", config);
+    const response = await API.get("Admin/GetOrders");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -49,14 +28,7 @@ const getOrders = async () => {
 };
 
 const verifyUser = async (verifyUserValues) => {
-  const token = localStorage.getItem("token");
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  await API.post("Admin/VerifyUser", verifyUserValues, config);
+  await API.post("Admin/VerifyUser", verifyUserValues);
 };
 
 // eslint-disable-next-line

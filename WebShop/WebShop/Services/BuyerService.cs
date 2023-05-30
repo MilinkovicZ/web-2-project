@@ -11,6 +11,7 @@ namespace WebShop.Services
 {
     public class BuyerService : IBuyerService
     {
+        public double DeliveryFee {get; set;} = 2.99;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         public BuyerService(IUnitOfWork unitOfWork, IMapper mapper)
@@ -30,6 +31,9 @@ namespace WebShop.Services
             order.StartTime = DateTime.Now;
             order.DeliveryTime = DateTime.Now.AddHours(1).AddMinutes(new Random().Next(59));
 
+            double totalPrice = 0;
+            var sellerIds = new List<int>();
+
             foreach (var item in order.Items)
             {
                 Product? product = await _unitOfWork.ProductsRepository.Get(item.ProductId);
@@ -42,9 +46,20 @@ namespace WebShop.Services
                 if (item.ProductAmount < 0)
                     throw new BadRequestException("Can't buy negative number of products.");
 
+
                 product.Amount -= item.ProductAmount;
+                item.CurrentPrice = product.Price;
+
+                totalPrice += item.ProductAmount * item.CurrentPrice;
+                if (!sellerIds.Contains(product.SellerId)) 
+                    sellerIds.Add(product.SellerId);
+
+                _unitOfWork.ItemsRepository.Update(item);
                 _unitOfWork.ProductsRepository.Update(product);
             }
+
+            totalPrice += sellerIds.Count() * DeliveryFee;
+            order.TotalPrice = totalPrice;
 
             await _unitOfWork.OrdersRepository.Insert(order);
             await _unitOfWork.Save();

@@ -9,7 +9,6 @@ const Orders = ({ userType }) => {
   const [newOrders, setNewOrders] = useState(userType === "Seller" ? [] : null);
 
   useEffect(() => {
-    console.log(userType);
     if (userType === "Admin") {
       fetchAdminOrders();
     } else if (userType === "Seller") {
@@ -49,14 +48,17 @@ const Orders = ({ userType }) => {
           <Order order={order} userType={userType} />
         </div>
       ))}
-      <h1 className={classes.title}>New Orders</h1>
-      {userType === "Seller" &&
-        newOrders !== null &&
-        newOrders.map((order) => (
-          <div className={classes.orderContainer} key={order.id}>
-            <Order order={order} userType={userType}/>
-          </div>
-        ))}
+      {userType === "Seller" && (
+        <div>
+          <h1 className={classes.title}>New Orders</h1>
+          {newOrders !== null &&
+            newOrders.map((order) => (
+              <div className={classes.orderContainer} key={order.id}>
+                <Order order={order} userType={userType} />
+              </div>
+            ))}
+        </div>
+      )}
     </div>
   );
 };

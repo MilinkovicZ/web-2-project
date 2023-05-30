@@ -6,14 +6,7 @@ const register = async (registerValues) => {
 
 const getProfile = async () => {
   try {
-    const token = localStorage.getItem("token");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const response = await API.get("User/GetProfile", config);
+    const response = await API.get("User/GetProfile");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -21,26 +14,11 @@ const getProfile = async () => {
 };
 
 const editProfile = async (editProfileValues) => {
-  const token = localStorage.getItem("token");
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  await API.put("User/EditProfile", editProfileValues, config);
+  await API.put("User/EditProfile", editProfileValues);
 };
 
 const addPicture = async (image) => {
-  const token = localStorage.getItem("token");
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "content-type": "multipart/form-data",
-    },
-  };
-
-  await API.put("User/AddPicture", image, config);
+  await API.put("User/AddPicture", image, {headers: {"content-type": "multipart/form-data"}});
 };
 
 // eslint-disable-next-line

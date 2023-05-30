@@ -74,7 +74,7 @@ namespace WebShop.Controllers
             return Ok();
         }
 
-        [HttpPost("DeleteProduct/{id}")]
+        [HttpDelete("DeleteProduct/{id}")]
         [Authorize(Roles = "Seller")]
         public async Task<IActionResult> DeleteProduct(int id)
         {

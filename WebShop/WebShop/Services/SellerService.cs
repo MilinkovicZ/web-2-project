@@ -78,7 +78,6 @@ namespace WebShop.Services
             if (existingProduct != null && product.Name != productDTO.Name)
                 throw new BadRequestException($"There is already product: {productDTO.Name}");
 
-
             _mapper.Map(productDTO, product);
 
             if (productDTO.ImageForm != null)

@@ -12,6 +12,7 @@ namespace WebShop.DTO
 
     public class ItemDTO : CreateItemDTO
     {
+        public double CurrentPrice { get; set; }
         public CreateProductDTO? Product { get; set; }
     }
 }

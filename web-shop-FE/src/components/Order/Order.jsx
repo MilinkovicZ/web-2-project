@@ -3,14 +3,6 @@ import OrderItem from "./OrderItem";
 import classes from "./Order.module.css";
 
 const Order = ({ order }) => {
-  const calculateTotalPrice = () => {
-    let totalPrice = 0;
-    order.items.forEach((item) => {
-      totalPrice += item.productAmount * item.product.price;
-    });
-    return totalPrice;
-  };
-
   let orderState = "";
   if (order.orderState === 0) orderState = "Preparing";
   else if (order.orderState === 1) orderState = "Delivered";
@@ -52,7 +44,7 @@ const Order = ({ order }) => {
       ))}
       <div className={classes.orderCommentPriceContainer}>
         <p className={classes.comment}>Comment: {order.comment}</p>
-        <p className={classes.totalPrice}>Total: ${calculateTotalPrice()}</p>
+        <p className={classes.totalPrice}>Total: ${order.totalPrice}</p>
       </div>
     </React.Fragment>
   );

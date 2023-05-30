@@ -2,14 +2,7 @@ import API from "../api/api.js";
 
 const getProduct = async (id) => {
   try {
-    const token = localStorage.getItem("token");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const response = await API.get("Seller/GetProduct/" + id, config);
+    const response = await API.get("Seller/GetProduct/" + id);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -18,14 +11,7 @@ const getProduct = async (id) => {
 
 const getProducts = async () => {
   try {
-    const token = localStorage.getItem("token");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const response = await API.get("Seller/GetProducts", config);
+    const response = await API.get("Seller/GetProducts");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -33,50 +19,20 @@ const getProducts = async () => {
 };
 
 const createProduct = async (createProductValues) => {
-  const token = localStorage.getItem("token");
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "content-type": "multipart/form-data",
-    },
-  };
-
-  await API.post("Seller/CreateProduct", createProductValues, config);
+  await API.post("Seller/CreateProduct", createProductValues, {headers: {"content-type": "multipart/form-data"}});
 };
 
 const updateProduct = async (id, updateProductValues) => {
-  const token = localStorage.getItem("token");
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "content-type": "multipart/form-data",
-    },
-  };
-
-  await API.put("Seller/UpdateProduct/" + id, updateProductValues, config);
+  await API.put("Seller/UpdateProduct/" + id, updateProductValues, {headers: {"content-type": "multipart/form-data"}});
 };
 
 const deleteProduct = async (id) => {
-  const token = localStorage.getItem("token");
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  await API.post("Seller/DeleteProduct/" + id, null, config);
+  await API.delete("Seller/DeleteProduct/" + id);
 };
 
 const getOrders = async () => {
   try {
-    const token = localStorage.getItem("token");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const response = await API.get("Seller/GetOrders", config);
+    const response = await API.get("Seller/GetOrders");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -85,14 +41,7 @@ const getOrders = async () => {
 
 const getNewOrders = async () => {
   try {
-    const token = localStorage.getItem("token");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const response = await API.get("Seller/GetNewOrders", config);
+    const response = await API.get("Seller/GetNewOrders");
     return response.data;
   } catch (error) {
     console.log(error);

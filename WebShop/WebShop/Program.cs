@@ -111,4 +111,25 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 
+Task.Run(() =>
+{
+    while (true)
+    {
+        using(var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetService<WebShopDBContext>();
+            dbContext!.Orders!.ToList().ForEach(o =>
+            {
+                if(o.OrderState == WebShop.Enums.OrderState.Preparing && o.DeliveryTime < DateTime.Now)
+                {
+                    o.OrderState = WebShop.Enums.OrderState.Delievered;
+                }
+            });
+
+            dbContext!.SaveChanges();            
+        }
+        Thread.Sleep(30000);
+    }
+});
+
 app.Run();
