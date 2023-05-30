@@ -19,6 +19,7 @@ namespace WebShop.DTO
         public string? Comment { get; set; }
         [Required]
         public int Id { get; set; }
+        [Required]
         public double TotalPrice { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime DeliveryTime { get; set; }

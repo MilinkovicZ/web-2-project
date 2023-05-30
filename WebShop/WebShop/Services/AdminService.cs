@@ -68,7 +68,7 @@ namespace WebShop.Services
                 throw new UnauthorizedException($"Unable to find user with ID: {adminId}.");
 
             var orders = await _unitOfWork.OrdersRepository.GetAll();
-            var includedOrders = orders.Include(x => x.Items).ThenInclude(x => x.Product).ToList();
+            var includedOrders = orders.Include(x => x.Items).ToList();
             return _mapper.Map<List<OrderDTO>>(includedOrders); ;
         }
     }

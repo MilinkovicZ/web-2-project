@@ -16,6 +16,5 @@ namespace WebShop.Models
         public User? Seller { get; set; }
         [Required]
         public int SellerId { get; set; }
-        public List<Item> Items { get; set; } = new List<Item>();
     }
 }

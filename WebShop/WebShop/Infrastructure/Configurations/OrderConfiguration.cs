@@ -15,7 +15,7 @@ namespace WebShop.Infrastructure.Configurations
             modelBuilder.Property(x => x.StartTime).IsRequired();
             modelBuilder.Property(x => x.DeliveryTime).IsRequired();
             modelBuilder.Property(x => x.Comment).HasMaxLength(100);
-            modelBuilder.Property(x => x.TotalPrice);
+            modelBuilder.Property(x => x.TotalPrice).IsRequired();
             modelBuilder.Property(x => x.OrderState).HasConversion(new EnumToStringConverter<OrderState>()).IsRequired().HasDefaultValue(OrderState.Preparing);
             modelBuilder.HasOne(x => x.Buyer).WithMany(x => x.Orders).HasForeignKey(x => x.BuyerId).OnDelete(DeleteBehavior.Cascade);
         }

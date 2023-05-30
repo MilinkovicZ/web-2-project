@@ -101,9 +101,14 @@ namespace WebShop.Services
             if (seller == null)
                 throw new UnauthorizedException($"Unable to find user with ID: {sellerId}.");
 
+            var products = await _unitOfWork.ProductsRepository.GetAll();
+            var filteredProduct = products.Where(p => p.SellerId == sellerId);
+
+            var productsIds = filteredProduct.Select(x => x.Id);
+
             var orders = await _unitOfWork.OrdersRepository.GetAll();
-            var includedOrders = orders.Where(o => o.OrderState == OrderState.Delievered).Include(o => o.Items).ThenInclude(i => i.Product);
-            var sellerOrders = includedOrders.Where(o => o.Items.Any(i => i.Product!.SellerId == sellerId)).ToList();
+            var includedOrders = orders.Where(o => o.OrderState == OrderState.Delievered).Include(o => o.Items);
+            var sellerOrders = includedOrders.Where(o => o.Items.Any(i => productsIds.Contains(i.ProductId))).ToList();
             return _mapper.Map<List<OrderDTO>>(sellerOrders);
         }
 
@@ -113,10 +118,15 @@ namespace WebShop.Services
             if (seller == null)
                 throw new UnauthorizedException($"Unable to find user with ID: {sellerId}.");
 
+            var products = await _unitOfWork.ProductsRepository.GetAll();
+            var filteredProduct = products.Where(p => p.SellerId == sellerId);
+
+            var productsIds = filteredProduct.Select(x => x.Id);
+
             var orders = await _unitOfWork.OrdersRepository.GetAll();
-            var includedOrders = orders.Where(o => o.OrderState == OrderState.Preparing).Include(o => o.Items).ThenInclude(i => i.Product);
-            var sellerOrders = includedOrders.Where(o => o.Items.Any(i => i.Product!.SellerId == sellerId)).ToList();
-            
+            var includedOrders = orders.Where(o => o.OrderState == OrderState.Preparing).Include(o => o.Items);
+            var sellerOrders = includedOrders.Where(o => o.Items.Any(i => productsIds.Contains(i.ProductId))).ToList();
+
             return _mapper.Map<List<OrderDTO>>(sellerOrders);
         }
 

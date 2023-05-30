@@ -11,7 +11,7 @@ namespace WebShop.Services
 {
     public class BuyerService : IBuyerService
     {
-        public double DeliveryFee {get; set;} = 2.99;
+        private double DeliveryFee {get; set;} = 2.99;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         public BuyerService(IUnitOfWork unitOfWork, IMapper mapper)
@@ -48,6 +48,7 @@ namespace WebShop.Services
 
 
                 product.Amount -= item.ProductAmount;
+                item.Name = product.Name;
                 item.CurrentPrice = product.Price;
 
                 totalPrice += item.ProductAmount * item.CurrentPrice;
@@ -72,7 +73,7 @@ namespace WebShop.Services
                 throw new UnauthorizedException($"Unable to find user with ID: {buyerId}.");
 
             var orders = await _unitOfWork.OrdersRepository.GetAll();
-            var includedOrder = orders.Include(x => x.Items).ThenInclude(x => x.Product);
+            var includedOrder = orders.Include(x => x.Items);
             var myOrder = includedOrder.FirstOrDefault(x => x.Id == orderId);
             if (myOrder == null)
                 throw new NotFoundException("Order doesn't exist within this user.");
@@ -103,7 +104,7 @@ namespace WebShop.Services
                 throw new UnauthorizedException($"Unable to find user with ID: {buyerId}.");
 
             var orders = await _unitOfWork.OrdersRepository.GetAll();
-            var includedOrders = orders.Include(x => x.Items).ThenInclude(x => x.Product).ToList();
+            var includedOrders = orders.Include(x => x.Items).ToList();
             var buyerOrders = includedOrders.Where(x => x.BuyerId == buyerId && (x.OrderState == OrderState.Preparing || x.OrderState == OrderState.Delievered)).ToList();
             
             return _mapper.Map<List<OrderDTO>>(buyerOrders);

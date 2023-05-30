@@ -41,15 +41,17 @@ const Orders = ({ userType }) => {
   };
 
   return (
-    <div className={classes.ordersContainer}>
-      <h1 className={classes.title}>All Orders</h1>
-      {orders.map((order) => (
-        <div className={classes.orderContainer} key={order.id}>
-          <Order order={order} userType={userType} />
-        </div>
-      ))}
+    <div className={classes.container}>
+      <div className={classes.ordersContainer}>
+        <h1 className={classes.title}>All Orders</h1>
+        {orders.map((order) => (
+          <div className={classes.orderContainer} key={order.id}>
+            <Order order={order} userType={userType} />
+          </div>
+        ))}
+      </div>
       {userType === "Seller" && (
-        <div>
+        <div className={classes.ordersContainer}>
           <h1 className={classes.title}>New Orders</h1>
           {newOrders !== null &&
             newOrders.map((order) => (
