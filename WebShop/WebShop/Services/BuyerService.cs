@@ -55,7 +55,6 @@ namespace WebShop.Services
                 if (!sellerIds.Contains(product.SellerId)) 
                     sellerIds.Add(product.SellerId);
 
-                _unitOfWork.ItemsRepository.Update(item);
                 _unitOfWork.ProductsRepository.Update(product);
             }
 

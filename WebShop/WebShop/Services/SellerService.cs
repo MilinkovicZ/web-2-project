@@ -26,11 +26,6 @@ namespace WebShop.Services
             if (seller == null)
                 throw new UnauthorizedException($"Unable to find user with ID: {sellerId}.");
 
-            var products = await _unitOfWork.ProductsRepository.GetAll();
-            var existingProduct = products.FirstOrDefault(x => x.Name == productDTO.Name);
-            if (existingProduct != null)
-                throw new BadRequestException($"There is already product: {productDTO.Name}");
-
             var product = _mapper.Map<Product>(productDTO);
             product.SellerId = sellerId;
 
@@ -72,11 +67,6 @@ namespace WebShop.Services
             Product? product = await _unitOfWork.ProductsRepository.Get(productId);
             if (product == null || product.SellerId != sellerId)
                 throw new NotFoundException($"Unable to find product with ID: {productId}.");
-
-            var products = await _unitOfWork.ProductsRepository.GetAll();
-            var existingProduct = products.FirstOrDefault(x => x.Name == productDTO.Name);
-            if (existingProduct != null && product.Name != productDTO.Name)
-                throw new BadRequestException($"There is already product: {productDTO.Name}");
 
             _mapper.Map(productDTO, product);
 
