@@ -2,7 +2,7 @@ import React from "react";
 import OrderItem from "./OrderItem";
 import classes from "./Order.module.css";
 
-const Order = ({ order }) => {
+const Order = ({ order, userType, onCancel }) => {
   let orderState = "";
   if (order.orderState === 0) orderState = "Preparing";
   else if (order.orderState === 1) orderState = "Delivered";
@@ -12,11 +12,15 @@ const Order = ({ order }) => {
     const deliveryDate = new Date(deliveryTime);
     const startDate = new Date();
     const remainingTime = deliveryDate.getTime() - startDate.getTime();
-  
+
     const hours = Math.floor(remainingTime / (1000 * 60 * 60));
-    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-    const formattedTime = `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}min`;
-  
+    const minutes = Math.floor(
+      (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
+    );
+    const formattedTime = `${hours.toString().padStart(2, "0")}h ${minutes
+      .toString()
+      .padStart(2, "0")}min`;
+
     return formattedTime;
   }
 
@@ -46,6 +50,16 @@ const Order = ({ order }) => {
         <p className={classes.comment}>Comment: {order.comment}</p>
         <p className={classes.totalPrice}>Total: ${order.totalPrice}</p>
       </div>
+      {userType === "Buyer" && order.orderState === 0 && (
+        <div className={classes.buttonContainer}>
+          <button
+            className={classes.cancelButton}
+            onClick={() => onCancel(order.id)}
+          >
+            Cancel Order
+          </button>
+        </div>
+      )}
     </React.Fragment>
   );
 };

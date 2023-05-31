@@ -20,7 +20,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!registerValues.username) {
+    if (!registerValues.username || registerValues.username.trim() === "") {
       alert("Username is required");
       return;
     }
@@ -52,7 +52,7 @@ const Register = () => {
       return;
     }
 
-    if (!registerValues.fullName) {
+    if (!registerValues.fullName || registerValues.fullName.trim() === "") {
       alert("Full name is required");
       return;
     }
@@ -62,7 +62,7 @@ const Register = () => {
       return;
     }
 
-    if (!registerValues.address) {
+    if (!registerValues.address || registerValues.address.trim() === "") {
       alert("Address is required");
       return;
     }

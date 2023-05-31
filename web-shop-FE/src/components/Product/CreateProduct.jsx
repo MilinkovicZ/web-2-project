@@ -17,7 +17,7 @@ const CreateProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!createProductValues.name) {
+    if (!createProductValues.name || createProductValues.name.trim() === "") {
       alert("Name is required");
       return;
     }

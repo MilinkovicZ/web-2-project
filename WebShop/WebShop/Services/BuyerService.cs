@@ -41,7 +41,7 @@ namespace WebShop.Services
                     throw new NotFoundException("Product is non existent.");
 
                 if (item.ProductAmount > product.Amount)
-                    throw new BadRequestException("Can't buy more product then available.");
+                    throw new BadRequestException($"Currently there is only {product.Amount} {product.Name}s in stock.");
 
                 if (item.ProductAmount < 0)
                     throw new BadRequestException("Can't buy negative number of products.");

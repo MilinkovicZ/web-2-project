@@ -40,7 +40,7 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!editValues.username) {
+    if (!editValues.username || editValues.username.trim() === "") {
       alert("Username is required");
       return;
     }
@@ -62,7 +62,7 @@ const Profile = () => {
       return;
     }
 
-    if (!editValues.fullName) {
+    if (!editValues.fullName || editValues.fullName.trim() === "") {
       alert("Full name is required");
       return;
     }
@@ -72,7 +72,7 @@ const Profile = () => {
       return;
     }
 
-    if (!editValues.address) {
+    if (!editValues.address || editValues.address.trim() === "") {
       alert("Address is required");
       return;
     }

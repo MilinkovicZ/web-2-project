@@ -40,7 +40,7 @@ const UpdateProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!updateProductValues.name) {
+    if (!updateProductValues.name || updateProductValues.name.trim() === "") {
       alert("Name is required");
       return;
     }

@@ -79,3 +79,25 @@
   .deliveryTimeState {
     margin:  0px;
   }
+
+
+.buttonContainer {
+  display: flex;
+  justify-content: right;
+  margin-top: 15px;
+}
+
+.cancelButton {
+  background-color: #8a2b06;
+  color: white;
+  cursor: pointer;
+  border-radius: 11px;
+  font-size: 14px;
+  padding: 10px;
+  margin-bottom: 15px;
+  right: 10px;
+}
+
+.cancelButton:hover {
+  opacity: 0.7;
+}

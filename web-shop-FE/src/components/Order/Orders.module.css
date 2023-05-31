@@ -25,4 +25,12 @@
   padding-bottom: 0px;
   padding-top: 0px;
   margin-bottom: 10px;
+  position: relative;
+}
+
+.ordersMissing {
+  font-family: "Comic Sans MS", cursive;
+  text-align: center;
+  color: blue;
+  opacity: 0.8;
 }

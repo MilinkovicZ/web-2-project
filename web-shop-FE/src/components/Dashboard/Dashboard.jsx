@@ -28,6 +28,16 @@ const Dashboard = ({ userType }) => {
           </Link>
         </div>
       )}
+      {userType === "Buyer" && (
+        <div className={classes.linkContainer}>
+          <Link to="/orders_buyer" className={classes.link}>
+            Orders
+          </Link>
+          <Link to="/create_new_order" className={classes.link}>
+            New Order
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
