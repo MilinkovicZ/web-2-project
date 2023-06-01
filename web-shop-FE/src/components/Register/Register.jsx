@@ -226,10 +226,10 @@ const Register = () => {
           <button type="submit" className={classes.button}>
             Register
           </button>
-          <p>
-            Already have an account? <Link to="/"> Login here.</Link>
-          </p>
         </form>
+        <p>
+          Already have an account? <Link to="/"> Login here.</Link>
+        </p>
       </div>
     </React.Fragment>
   );

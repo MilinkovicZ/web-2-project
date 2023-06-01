@@ -3,12 +3,7 @@ import API from "../api/api.js";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
-const AuthContext = React.createContext({
-  token: null,
-  type: null,
-  login: (loginData) => {},
-  logout: () => {},
-});
+const AuthContext = React.createContext();
 
 export const AuthContextProvider = (props) => {
   const [token, setToken] = useState(null);
@@ -29,6 +24,18 @@ export const AuthContextProvider = (props) => {
         alert(error.response.data.Exception);
     }
   };
+
+  const googleLogin = async (loginData) => {
+    try {
+      const response = await API.post("Auth/RegisterViaGoogle", {token: loginData.credential});
+      setToken(response.data.token);
+      localStorage.setItem("token", response.data.token);
+      navigator("/dashboard");
+    } catch (error) {
+      if (error.response) 
+        alert(error.response.data.Exception);
+    }
+  }
 
   const roleHandler = () => {
     try {
@@ -53,6 +60,7 @@ export const AuthContextProvider = (props) => {
         type: roleHandler(),
         login: loginHandler,
         logout: logoutHandler,
+        googleLogin: googleLogin
       }}
     >
       {props.children}

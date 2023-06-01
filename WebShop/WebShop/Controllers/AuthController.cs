@@ -40,10 +40,10 @@ namespace WebShop.Controllers
 
         [HttpPost("RegisterViaGoogle")]
         [AllowAnonymous]
-        public async Task<IActionResult> RegisterViaGoogle(UserRegisterDTO userRegisterDTO)
+        public async Task<IActionResult> RegisterViaGoogle(GoogleLoginDTO googleLoginDTO)
         {
-            await _authService.RegisterViaGoogle(userRegisterDTO);
-            return Ok();
+            var token = await _authService.RegisterViaGoogle(googleLoginDTO);
+            return Ok(new {token = token});
         }
     }
 }

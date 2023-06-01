@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,6 +10,7 @@ using WebShop.Enums;
 using WebShop.Exceptions;
 using WebShop.Interfaces;
 using WebShop.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WebShop.Services
 {
@@ -35,7 +37,7 @@ namespace WebShop.Services
 
             return user;
         }
-
+                
         public async Task<string> Login(UserLoginDTO userLoginDTO)
         {
             User loggedUser = await GetUser(userLoginDTO.Email, userLoginDTO.Password);
@@ -48,26 +50,10 @@ namespace WebShop.Services
                     throw new BadRequestException("You are still not accepted by administator. Please wait!");
             }
 
-            var claims = new[]
-            {                        
-                        new Claim(ClaimTypes.Name, loggedUser.Username),
-                        new Claim(ClaimTypes.Role, loggedUser.UserType.ToString()),
-                        new Claim("UserId", loggedUser.Id.ToString()),
-                        new Claim("Email", loggedUser.Email),
-                        new Claim("UserType", loggedUser.UserType.ToString())
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? "defaultdefault11"));
-            var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var token = new JwtSecurityToken(
-                _configuration["Jwt:Issuer"],
-                _configuration["Jwt:Audience"],
-                claims,
-                expires: DateTime.UtcNow.AddDays(1),
-                signingCredentials: signIn);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var token = GetToken(loggedUser);
+            return token;
         }
+
         public async Task Register(UserRegisterDTO userRegisterDTO)
         {
             var users = await _unitOfWork.UsersRepository.GetAll();
@@ -109,9 +95,59 @@ namespace WebShop.Services
             await _unitOfWork.UsersRepository.Insert(newUser);
             await _unitOfWork.Save();
         }
-        public Task RegisterViaGoogle(UserRegisterDTO userRegisterDTO)
+
+        public async Task<string> RegisterViaGoogle(GoogleLoginDTO googleLoginDTO)
         {
-            throw new NotImplementedException();
+            var settings = new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new List<string> { _configuration["Authentication:Google:ClientId"]! }
+            };
+
+            var response = await GoogleJsonWebSignature.ValidateAsync(googleLoginDTO.Token, settings);
+
+            var users = await _unitOfWork.UsersRepository.GetAll();
+            var user = users.FirstOrDefault(u => u.Email == response.Email);
+            if (user != null)
+                return GetToken(user);
+
+            user = new User
+            {
+                Username = $"{response.GivenName}123",
+                Email = response.Email,
+                FullName = response.Name,
+                BirthDate = DateTime.Now,
+                Address = "Default Address",
+                Password = BCrypt.Net.BCrypt.HashPassword("defaultPassword"),
+                VerificationState = VerificationState.Accepted,
+                UserType = UserType.Buyer
+            };
+
+            await _unitOfWork.UsersRepository.Insert(user);
+            await _unitOfWork.Save();
+            return GetToken(user);
         }
-    }    
+
+        private string GetToken(User user)
+        {
+            var claims = new[]
+            {
+                        new Claim(ClaimTypes.Name, user.Username),
+                        new Claim(ClaimTypes.Role, user.UserType.ToString()),
+                        new Claim("UserId", user.Id.ToString()),
+                        new Claim("Email", user.Email),
+                        new Claim("UserType", user.UserType.ToString())
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? "defaultdefault11"));
+            var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                _configuration["Jwt:Issuer"],
+                _configuration["Jwt:Audience"],
+                claims,
+                expires: DateTime.UtcNow.AddDays(1),
+                signingCredentials: signIn);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+    }
 }

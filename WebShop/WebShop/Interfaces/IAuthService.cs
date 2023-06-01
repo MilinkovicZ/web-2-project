@@ -8,6 +8,6 @@ namespace WebShop.Interfaces
     {
         Task<string> Login(UserLoginDTO userLoginDTO);
         Task Register(UserRegisterDTO userRegisterDTO);
-        Task RegisterViaGoogle(UserRegisterDTO userRegisterDTO);
+        Task<string> RegisterViaGoogle(GoogleLoginDTO googleLoginDTO);
     }
 }

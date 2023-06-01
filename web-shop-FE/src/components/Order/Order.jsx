@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import OrderItem from "./OrderItem";
 import classes from "./Order.module.css";
 
@@ -7,6 +7,21 @@ const Order = ({ order, userType, onCancel }) => {
   if (order.orderState === 0) orderState = "Preparing";
   else if (order.orderState === 1) orderState = "Delivered";
   else orderState = "Canceled";
+
+  const [remainingTime, setRemainingTime] = useState(
+    calculateRemainingTime(order.deliveryTime)
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newRemainingTime = calculateRemainingTime(order.deliveryTime);
+      setRemainingTime(newRemainingTime);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [order.deliveryTime]);
 
   function calculateRemainingTime(deliveryTime) {
     const deliveryDate = new Date(deliveryTime);
@@ -17,9 +32,11 @@ const Order = ({ order, userType, onCancel }) => {
     const minutes = Math.floor(
       (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
     );
-    const formattedTime = `${hours.toString().padStart(2, "0")}h ${minutes
+    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+    const formattedTime = `${hours}:${minutes
       .toString()
-      .padStart(2, "0")}min`;
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 
     return formattedTime;
   }
@@ -38,7 +55,7 @@ const Order = ({ order, userType, onCancel }) => {
         <div className={classes.deliveryTime}>
           <p className={classes.deliveryTimeLabel}>Delivery Time :</p>
           <p className={classes.deliveryTimeState}>
-            {calculateRemainingTime(order.deliveryTime)}
+            {remainingTime}
           </p>
         </div>
       )}

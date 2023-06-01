@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import classes from "./Login.module.css";
 import { Link } from "react-router-dom";
 import AuthContext from "../../store/authContext";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const authContext = useContext(AuthContext);
@@ -32,6 +33,10 @@ const Login = () => {
 
     authContext.login(loginValues);
   };
+
+  const handleGoogleLogin = (e) => {
+    authContext.googleLogin(e);
+  }
 
   return (
     <React.Fragment>
@@ -73,6 +78,11 @@ const Login = () => {
             Don't have an account? <Link to="/register"> Register here.</Link>
           </p>
         </form>
+        
+        <GoogleLogin
+          onSuccess={handleGoogleLogin}
+          onError={(e) => alert("An error occured, please try again.")}
+        />
       </div>
     </React.Fragment>
   );
