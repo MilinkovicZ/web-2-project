@@ -178,6 +178,8 @@ const Register = () => {
               type="date"
               id="birthDate"
               value={registerValues.birthDate}
+              min="1900-01-01"
+              max="2010-01-01"
               onChange={(event) =>
                 setRegisterValues({
                   ...registerValues,

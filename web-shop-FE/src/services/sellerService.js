@@ -1,9 +1,11 @@
 import API from "../api/api.js";
+import OrderModel from "../models/orderModel.js";
+import ProductModel from "../models/productModel.js";
 
 const getProduct = async (id) => {
   try {
     const response = await API.get("Seller/GetProduct/" + id);
-    return response.data;
+    return new ProductModel(response.data);
   } catch (error) {
     console.log(error);
   }
@@ -12,7 +14,7 @@ const getProduct = async (id) => {
 const getProducts = async () => {
   try {
     const response = await API.get("Seller/GetProducts");
-    return response.data;
+    return (response.data.map(p => new ProductModel(p)));
   } catch (error) {
     console.log(error);
   }
@@ -33,7 +35,7 @@ const deleteProduct = async (id) => {
 const getOrders = async () => {
   try {
     const response = await API.get("Seller/GetOrders");
-    return response.data;
+    return (response.data.map(o => new OrderModel(o)));;
   } catch (error) {
     console.log(error);
   }
@@ -42,7 +44,7 @@ const getOrders = async () => {
 const getNewOrders = async () => {
   try {
     const response = await API.get("Seller/GetNewOrders");
-    return response.data;
+    return (response.data.map(o => new OrderModel(o)));;
   } catch (error) {
     console.log(error);
   }

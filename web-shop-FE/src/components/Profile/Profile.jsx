@@ -184,6 +184,8 @@ const Profile = () => {
             <input
               type="date"
               value={editValues.birthDate}
+              min="1900-01-01"
+              max="2010-01-01"
               onChange={(e) =>
                 setEditValues({ ...editValues, birthDate: e.target.value })
               }

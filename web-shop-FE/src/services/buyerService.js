@@ -1,9 +1,11 @@
 import API from "../api/api";
+import OrderModel from "../models/orderModel";
+import ProductModel from "../models/productModel";
 
 const getProducts = async () => {
   try {
     const response = await API.get("Buyer/GetProducts");
-    return response.data;
+    return (response.data.map(p => new ProductModel(p)));
   } catch (error) {
     console.log(error);
   }
@@ -12,7 +14,7 @@ const getProducts = async () => {
 const getOrders = async () => {
   try {
     const response = await API.get("Buyer/GetOrders");
-    return response.data;
+    return (response.data.map(o => new OrderModel(o)));
   } catch (error) {
     console.log(error);
   }

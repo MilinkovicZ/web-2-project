@@ -1,4 +1,5 @@
 import API from "../api/api.js";
+import ProfileModel from "../models/profileModel.js";
 
 const register = async (registerValues) => {
   await API.post("Auth/Register", registerValues);
@@ -7,7 +8,7 @@ const register = async (registerValues) => {
 const getProfile = async () => {
   try {
     const response = await API.get("User/GetProfile");
-    return response.data;
+    return new ProfileModel(response.data);
   } catch (error) {
     console.log(error);
   }
