@@ -8,6 +8,8 @@ namespace WebShop.Interfaces
     {
         Task<List<User>> GetAllVerified(int adminId);
         Task<List<User>> GetAllUnverified(int adminId);
+        Task<List<User>> GetAllDeclined (int adminId);
+        Task<List<User>> GetAllBuyers(int adminId);
         Task VerifyUser(UserVerifyDTO userVerifyDTO, int adminId);
         Task<List<OrderDTO>> GetAllOrders(int adminId);
     }

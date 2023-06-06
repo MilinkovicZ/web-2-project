@@ -40,6 +40,28 @@ namespace WebShop.Controllers
             return Ok(users);
         }
 
+        [HttpGet("GetDeclined")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllDeclined()
+        {
+            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int adminId))
+                throw new BadRequestException("Error occured with ID. Please try again.");
+
+            var users = await _adminService.GetAllDeclined(adminId);
+            return Ok(users);
+        }
+
+        [HttpGet("GetBuyers")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllBuyers()
+        {
+            if (!int.TryParse((User.Claims.First(c => c.Type == "UserId").Value), out int adminId))
+                throw new BadRequestException("Error occured with ID. Please try again.");
+
+            var users = await _adminService.GetAllBuyers(adminId);
+            return Ok(users);
+        }
+
         [HttpPost("VerifyUser")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> VerifyUser(UserVerifyDTO userVerifyDTO)

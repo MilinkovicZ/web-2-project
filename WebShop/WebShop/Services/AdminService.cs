@@ -30,6 +30,7 @@ namespace WebShop.Services
             List<User> verified = users.Where(u => u.VerificationState == VerificationState.Accepted && u.UserType == UserType.Seller).ToList();
             return verified;
         }
+
         public async Task<List<User>> GetAllUnverified(int adminId)
         {
             User? admin = await _unitOfWork.UsersRepository.Get(adminId);
@@ -38,6 +39,27 @@ namespace WebShop.Services
 
             var users = await _unitOfWork.UsersRepository.GetAll();
             List<User> verified = users.Where(u => u.VerificationState == VerificationState.Waiting && u.UserType == UserType.Seller).ToList();
+            return verified;
+        }
+        public async Task<List<User>> GetAllDeclined(int adminId)
+        {
+            User? admin = await _unitOfWork.UsersRepository.Get(adminId);
+            if (admin == null)
+                throw new UnauthorizedException($"Unable to find user with ID: {adminId}.");
+
+            var users = await _unitOfWork.UsersRepository.GetAll();
+            List<User> verified = users.Where(u => u.VerificationState == VerificationState.Denied && u.UserType == UserType.Seller).ToList();
+            return verified;
+        }
+
+        public async Task<List<User>> GetAllBuyers(int adminId)
+        {
+            User? admin = await _unitOfWork.UsersRepository.Get(adminId);
+            if (admin == null)
+                throw new UnauthorizedException($"Unable to find user with ID: {adminId}.");
+
+            var users = await _unitOfWork.UsersRepository.GetAll();
+            List<User> verified = users.Where(u=> u.UserType == UserType.Buyer).ToList();
             return verified;
         }
         public async Task VerifyUser(UserVerifyDTO userVerifyDTO, int adminId)
@@ -50,13 +72,16 @@ namespace WebShop.Services
             if (user == null)
                 throw new BadRequestException("Error occured with ID. Please try again.");
 
+            if (user.VerificationState != VerificationState.Waiting)
+                throw new BadRequestException("You can only verify waiting users");
+
             user.VerificationState = userVerifyDTO.verificationState;
 
-            if (user.VerificationState == VerificationState.Accepted)
-                await _mailService.SendEmail("Verification", "Your account is approved. You can now start selling.", user.Email);
-            else
-                await _mailService.SendEmail("Verification", "Your account declined. Contact us for more information.", user.Email);
-
+            string message = "";
+            message = user.VerificationState == VerificationState.Accepted ? "Your account is approved. You can now start selling." : "Your account declined. Contact us for more information.";
+            
+            _ = Task.Run(async () => await _mailService.SendEmail("Verification", message, user.Email));
+           
             _unitOfWork.UsersRepository.Update(user);
             await _unitOfWork.Save();
         }

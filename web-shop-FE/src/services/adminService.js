@@ -18,6 +18,24 @@ const getUnverified = async () => {
   }
 };
 
+const getDeclined = async () => {
+  try {
+    const response = await API.get("Admin/GetDeclined");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getBuyers = async () => {
+  try {
+    const response = await API.get("Admin/GetBuyers");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const getOrders = async () => {
   try {
     const response = await API.get("Admin/GetOrders");
@@ -37,4 +55,6 @@ export default {
   getUnverified,
   getOrders,
   verifyUser,
+  getDeclined,
+  getBuyers
 };
