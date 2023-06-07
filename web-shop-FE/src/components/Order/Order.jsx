@@ -65,7 +65,7 @@ const Order = ({ order, userType, onCancel }) => {
       ))}
       <div className={classes.orderCommentPriceContainer}>
         <p className={classes.comment}>Comment: {order.comment}</p>
-        <p className={classes.totalPrice}>Total: ${order.totalPrice}</p>
+        <p className={classes.totalPrice}>Total: ${order.totalPrice.toFixed(2)}</p>
       </div>
       {userType === "Buyer" && order.orderState === 0 && (
         <div className={classes.buttonContainer}>

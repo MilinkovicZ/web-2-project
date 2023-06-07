@@ -73,6 +73,7 @@ const Register = () => {
     }
 
     try {
+      registerValues.userType = parseInt(registerValues.userType);
       await userService.register(registerValues);
       navigator("/");
     } catch (error) {
