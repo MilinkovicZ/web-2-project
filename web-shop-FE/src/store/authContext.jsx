@@ -18,6 +18,7 @@ export const AuthContextProvider = (props) => {
       const response = await API.post("Auth/Login", loginData);
       setToken(response.data.token);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", jwtDecode(response.data.token).UserType);
       navigator("/dashboard");
     } catch (error) {
       if (error.response) 
@@ -30,6 +31,7 @@ export const AuthContextProvider = (props) => {
       const response = await API.post("Auth/RegisterViaGoogle", {token: loginData.credential});
       setToken(response.data.token);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", jwtDecode(response.data.token).UserType);
       navigator("/dashboard");
     } catch (error) {
       if (error.response) 
@@ -37,19 +39,10 @@ export const AuthContextProvider = (props) => {
     }
   }
 
-  const roleHandler = () => {
-    try {
-      if (!token) return null;
-
-      return jwtDecode(token).UserType;
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   const logoutHandler = () => {
     setToken(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
     navigator("/");
   };
 
@@ -57,7 +50,7 @@ export const AuthContextProvider = (props) => {
     <AuthContext.Provider
       value={{
         token,
-        type: roleHandler(),
+        type: localStorage.getItem("role"),
         login: loginHandler,
         logout: logoutHandler,
         googleLogin: googleLogin

@@ -45,6 +45,7 @@ const Product = ({ product, onDeleteProduct, onUpdateProduct, userType }) => {
       price: product.price,
       name: product.name,
       amount: product.amount,
+      sellerId: product.sellerId,
       quantity: number,
     };
 

@@ -20,5 +20,7 @@ namespace WebShop.DTO
     {
         [Required]
         public int Id { get; set; }
+        [Required]
+        public int SellerId { get; set; }
     }
 }

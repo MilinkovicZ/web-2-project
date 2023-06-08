@@ -7,6 +7,7 @@ class ProductModel {
     this.description = product.description;
     this.image = product.image;
     this.imageFile = product.imageFile;
+    this.sellerId = product.sellerId;
   }
 }
 

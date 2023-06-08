@@ -24,10 +24,13 @@ const Cart = () => {
 
   const calculateTotalPrice = () => {
     let totalPrice = 0;
+    const sellerIds = []
     for (const item of cartContext.cartItems) {
       totalPrice += item.price * item.quantity;
+      if (!sellerIds.includes(item.sellerId))
+        sellerIds.push(item.sellerId)
     }
-    return totalPrice;
+    return (totalPrice + sellerIds.length*2.99).toFixed(2);
   };
 
   const handleConfirmOrder = async () => {
@@ -125,7 +128,7 @@ const Cart = () => {
         Total Price: ${calculateTotalPrice()}
       </div>
       <div className={classes.note}>
-        <p> This price does not include delivery fee.</p>
+        <p>Delivery fee is <strong>$2.99</strong> per seller.</p>
       </div>
       <div className={classes.linkButton}>
         <Link className={classes.link} to="/create_new_order" />
