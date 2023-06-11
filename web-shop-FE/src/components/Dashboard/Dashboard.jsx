@@ -20,20 +20,20 @@ const Dashboard = ({ userType }) => {
           <Link to="/products" className={classes.link}>
             Products
           </Link>
-          <Link to="/orders_seller" className={classes.link}>
+          <Link to="/my-orders" className={classes.link}>
             Orders
           </Link>
-          <Link to="/create_new_product" className={classes.link}>
+          <Link to="/new-product" className={classes.link}>
             New Product
           </Link>
         </div>
       )}
       {userType === "Buyer" && (
         <div className={classes.linkContainer}>
-          <Link to="/orders_buyer" className={classes.link}>
+          <Link to="/previous-orders" className={classes.link}>
             Orders
           </Link>
-          <Link to="/create_new_order" className={classes.link}>
+          <Link to="/new-order" className={classes.link}>
             New Order
           </Link>
         </div>

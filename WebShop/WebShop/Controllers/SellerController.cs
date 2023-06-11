@@ -19,7 +19,7 @@ namespace WebShop.Controllers
             _sellerService = sellerService;
         }
 
-        [HttpGet("GetProduct/{id}")]
+        [HttpGet("products/{id}")]
         [Authorize(Roles = "Seller")]
         public async Task<IActionResult> GetProduct(int id)
         {
@@ -30,7 +30,7 @@ namespace WebShop.Controllers
             return Ok(product);
         }
 
-        [HttpGet("GetProducts")]
+        [HttpGet("products")]
         [Authorize(Roles = "Seller")]
         public async Task<IActionResult> GetAllProducts()
         {
@@ -41,7 +41,7 @@ namespace WebShop.Controllers
             return Ok(products);
         }
 
-        [HttpGet("GetOrders")]
+        [HttpGet("orders")]
         [Authorize(Roles = "Seller")]
         public async Task<IActionResult> GetAllOrders()
         {
@@ -52,7 +52,7 @@ namespace WebShop.Controllers
             return Ok(orders);
         }
 
-        [HttpGet("GetNewOrders")]
+        [HttpGet("new-orders")]
         [Authorize(Roles = "Seller")]
         public async Task<IActionResult> GetNewOrders()
         {
@@ -63,7 +63,7 @@ namespace WebShop.Controllers
             return Ok(orders);
         }
 
-        [HttpPost("CreateProduct")]
+        [HttpPost("products")]
         [Authorize(Roles = "Seller")]
         public async Task<IActionResult> CreateNewProduct([FromForm]CreateProductDTO productDTO)
         {
@@ -74,7 +74,7 @@ namespace WebShop.Controllers
             return Ok();
         }
 
-        [HttpDelete("DeleteProduct/{id}")]
+        [HttpDelete("products/{id}")]
         [Authorize(Roles = "Seller")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
@@ -85,7 +85,7 @@ namespace WebShop.Controllers
             return Ok();
         }
 
-        [HttpPut("UpdateProduct/{id}")]
+        [HttpPut("products/{id}")]
         [Authorize(Roles = "Seller")]
         public async Task<IActionResult> UpdateProduct(int id, [FromForm]CreateProductDTO productDTO)
         {

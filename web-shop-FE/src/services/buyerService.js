@@ -4,7 +4,7 @@ import ProductModel from "../models/productModel";
 
 const getProducts = async () => {
   try {
-    const response = await API.get("Buyer/GetProducts");
+    const response = await API.get("buyer/products");
     return (response.data.map(p => new ProductModel(p)));
   } catch (error) {
     console.log(error);
@@ -13,7 +13,7 @@ const getProducts = async () => {
 
 const getOrders = async () => {
   try {
-    const response = await API.get("Buyer/GetOrders");
+    const response = await API.get("buyer/orders");
     return (response.data.map(o => new OrderModel(o)));
   } catch (error) {
     console.log(error);
@@ -21,11 +21,11 @@ const getOrders = async () => {
 };
 
 const createOrder = async (createOrderValues) => {
-  await API.post("Buyer/CreateOrder", createOrderValues);
+  await API.post("buyer/create-order", createOrderValues);
 }
 
 const declineOrder = async (id) => {
-  await API.post("Buyer/DeclineOrder/" + id);
+  await API.post("buyer/decline-order/" + id);
 }
 
 // eslint-disable-next-line

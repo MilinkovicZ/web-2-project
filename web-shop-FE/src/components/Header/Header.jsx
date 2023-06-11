@@ -14,7 +14,7 @@ const Header = () => {
   const renderEditProfileLink = () => {
     if (location.pathname === '/dashboard') {
       return (
-        <Link to="/editProfile" className={classes.link}>
+        <Link to="/edit-profile" className={classes.link}>
           Edit Profile
         </Link>
       );

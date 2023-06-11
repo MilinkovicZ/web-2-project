@@ -52,14 +52,14 @@ const Products = ({ userType}) => {
   };
 
   const updateProductHandler = async (id) => {
-    navigator("/update_product/" + id);
+    navigator("/update-product/" + id);
   };
 
   return (
     <div>
       {userType === "Seller" ? <h1 className={classes.title}>My Products</h1> : <h1 className={classes.title}>MAKE A NEW ORDER</h1>}
       <div className={classes.container}>
-        {userType === "Seller" && products.map((product) => (
+        {userType === "Seller" && products.length !== 0 &&  products.map((product) => (
           <Product
             key={product.id}
             onDeleteProduct={handleDeleteProduct}
@@ -68,7 +68,7 @@ const Products = ({ userType}) => {
             userType="Seller"
           />
         ))}
-        {userType === "Buyer" && products.map((product) => (
+        {userType === "Buyer" && products.length !== 0 && products.map((product) => (
           <Product
             key={product.id}
             product={product}

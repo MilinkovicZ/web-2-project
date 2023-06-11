@@ -22,7 +22,7 @@ namespace WebShop.Controllers
             _authService = authService;
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login(UserLoginDTO userLoginDTO)
         {
@@ -30,7 +30,7 @@ namespace WebShop.Controllers
             return Ok(new { token = token });
         }
 
-        [HttpPost("Register")]
+        [HttpPost("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register(UserRegisterDTO userRegisterDTO)
         {
@@ -38,7 +38,7 @@ namespace WebShop.Controllers
             return Ok();
         }
 
-        [HttpPost("RegisterViaGoogle")]
+        [HttpPost("register-via-google")]
         [AllowAnonymous]
         public async Task<IActionResult> RegisterViaGoogle(GoogleLoginDTO googleLoginDTO)
         {

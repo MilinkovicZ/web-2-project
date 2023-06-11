@@ -4,7 +4,7 @@ import ProductModel from "../models/productModel.js";
 
 const getProduct = async (id) => {
   try {
-    const response = await API.get("Seller/GetProduct/" + id);
+    const response = await API.get("seller/products/" + id);
     return new ProductModel(response.data);
   } catch (error) {
     console.log(error);
@@ -13,7 +13,7 @@ const getProduct = async (id) => {
 
 const getProducts = async () => {
   try {
-    const response = await API.get("Seller/GetProducts");
+    const response = await API.get("seller/products");
     return (response.data.map(p => new ProductModel(p)));
   } catch (error) {
     console.log(error);
@@ -21,20 +21,20 @@ const getProducts = async () => {
 };
 
 const createProduct = async (createProductValues) => {
-  await API.post("Seller/CreateProduct", createProductValues, {headers: {"content-type": "multipart/form-data"}});
+  await API.post("seller/products", createProductValues, {headers: {"content-type": "multipart/form-data"}});
 };
 
 const updateProduct = async (id, updateProductValues) => {
-  await API.put("Seller/UpdateProduct/" + id, updateProductValues, {headers: {"content-type": "multipart/form-data"}});
+  await API.put("seller/products/" + id, updateProductValues, {headers: {"content-type": "multipart/form-data"}});
 };
 
 const deleteProduct = async (id) => {
-  await API.delete("Seller/DeleteProduct/" + id);
+  await API.delete("seller/products/" + id);
 };
 
 const getOrders = async () => {
   try {
-    const response = await API.get("Seller/GetOrders");
+    const response = await API.get("seller/orders");
     return (response.data.map(o => new OrderModel(o)));;
   } catch (error) {
     console.log(error);
@@ -43,7 +43,7 @@ const getOrders = async () => {
 
 const getNewOrders = async () => {
   try {
-    const response = await API.get("Seller/GetNewOrders");
+    const response = await API.get("seller/new-orders");
     return (response.data.map(o => new OrderModel(o)));;
   } catch (error) {
     console.log(error);

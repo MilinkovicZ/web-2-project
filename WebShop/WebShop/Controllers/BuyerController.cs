@@ -17,7 +17,7 @@ namespace WebShop.Controllers
             _buyerService = buyerService;
         }
 
-        [HttpGet("GetProducts")]
+        [HttpGet("products")]
         [Authorize(Roles = "Buyer")]
         public async Task<IActionResult> GetAllProducts()
         {
@@ -28,7 +28,7 @@ namespace WebShop.Controllers
             return Ok(products);
         }
 
-        [HttpGet("GetOrders")]
+        [HttpGet("orders")]
         [Authorize(Roles = "Buyer")]
         public async Task<IActionResult> GetMyOrders()
         {
@@ -39,7 +39,7 @@ namespace WebShop.Controllers
             return Ok(orders);
         }
 
-        [HttpPost("CreateOrder")]
+        [HttpPost("create-order")]
         [Authorize(Roles = "Buyer")]
         public async Task<IActionResult> CreateOrder(CreateOrderDTO orderDTO)
         {
@@ -50,7 +50,7 @@ namespace WebShop.Controllers
             return Ok();
         }
 
-        [HttpPost("DeclineOrder/{id}")]
+        [HttpPost("decline-order/{id}")]
         [Authorize(Roles = "Buyer")]
         public async Task<IActionResult> DeclineOrder(int id)
         {

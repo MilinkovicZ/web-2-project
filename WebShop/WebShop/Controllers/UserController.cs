@@ -20,7 +20,7 @@ namespace WebShop.Controllers
             _userService = userService;
         }
 
-        [HttpGet("GetProfile")]
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> Get()
         {
@@ -31,7 +31,7 @@ namespace WebShop.Controllers
             return Ok(userProfile);
         }
 
-        [HttpPut("EditProfile")]
+        [HttpPut]
         [Authorize]
         public async Task<IActionResult> EditUserProfile(EditUserDTO editUserDTO)
         {
@@ -42,7 +42,7 @@ namespace WebShop.Controllers
             return Ok();
         }
 
-        [HttpPut("AddPicture")]
+        [HttpPut("add-picture")]
         [Authorize]
         public async Task<IActionResult> AddPicture([FromForm] IFormFile image)
         {

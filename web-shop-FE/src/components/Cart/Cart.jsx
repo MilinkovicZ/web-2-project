@@ -58,7 +58,7 @@ const Cart = () => {
     try {
       await buyerService.createOrder(createOrderValues);
       cartContext.clearCart();
-      navigator("/orders_buyer");
+      navigator("/previous-orders");
     } catch (error) {
       if (error.response) alert(error.response.data.Exception);
     }
@@ -131,7 +131,7 @@ const Cart = () => {
         <p>Delivery fee is <strong>$2.99</strong> per seller.</p>
       </div>
       <div className={classes.linkButton}>
-        <Link className={classes.link} to="/create_new_order" />
+        <Link className={classes.link} to="/new-order" />
         <button className={classes.confirmOrder} onClick={handleConfirmOrder}>
           Confirm Order
         </button>

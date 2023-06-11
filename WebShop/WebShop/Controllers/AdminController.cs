@@ -18,7 +18,7 @@ namespace WebShop.Controllers
             _adminService = adminService;
         }
 
-        [HttpGet("GetVerified")]
+        [HttpGet("verified-users")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllVerified()
         {
@@ -29,7 +29,7 @@ namespace WebShop.Controllers
             return Ok(users);
         }
 
-        [HttpGet("GetUnverified")]
+        [HttpGet("unverified-users")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllUnverified()
         {
@@ -40,7 +40,7 @@ namespace WebShop.Controllers
             return Ok(users);
         }
 
-        [HttpGet("GetDeclined")]
+        [HttpGet("declined-users")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllDeclined()
         {
@@ -51,7 +51,7 @@ namespace WebShop.Controllers
             return Ok(users);
         }
 
-        [HttpGet("GetBuyers")]
+        [HttpGet("buyers")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllBuyers()
         {
@@ -62,7 +62,7 @@ namespace WebShop.Controllers
             return Ok(users);
         }
 
-        [HttpPost("VerifyUser")]
+        [HttpPost("verify-user")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> VerifyUser(UserVerifyDTO userVerifyDTO)
         {
@@ -74,7 +74,7 @@ namespace WebShop.Controllers
             return Ok();
         }
 
-        [HttpGet("GetOrders")]
+        [HttpGet("orders")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllOrders()
         {

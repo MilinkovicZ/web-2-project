@@ -15,7 +15,7 @@ export const AuthContextProvider = (props) => {
 
   const loginHandler = async (loginData) => {
     try {
-      const response = await API.post("Auth/Login", loginData);
+      const response = await API.post("auth/login", loginData);
       setToken(response.data.token);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", jwtDecode(response.data.token).UserType);
@@ -28,7 +28,7 @@ export const AuthContextProvider = (props) => {
 
   const googleLogin = async (loginData) => {
     try {
-      const response = await API.post("Auth/RegisterViaGoogle", {token: loginData.credential});
+      const response = await API.post("auth/register-via-google", {token: loginData.credential});
       setToken(response.data.token);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", jwtDecode(response.data.token).UserType);

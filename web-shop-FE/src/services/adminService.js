@@ -4,7 +4,7 @@ import UserModel from "../models/userModel.js";
 
 const getVerified = async () => {
   try {
-    const response = await API.get("Admin/GetVerified");
+    const response = await API.get("admin/verified-users");
     return (response.data.map(u => new UserModel(u)));
   } catch (error) {
     console.log(error);
@@ -13,7 +13,7 @@ const getVerified = async () => {
 
 const getUnverified = async () => {
   try {
-    const response = await API.get("Admin/GetUnverified");
+    const response = await API.get("admin/unverified-users");
     return (response.data.map(u => new UserModel(u)));
   } catch (error) {
     console.log(error);
@@ -22,7 +22,7 @@ const getUnverified = async () => {
 
 const getDeclined = async () => {
   try {
-    const response = await API.get("Admin/GetDeclined");
+    const response = await API.get("admin/declined-users");
     return (response.data.map(u => new UserModel(u)));
   } catch (error) {
     console.log(error);
@@ -31,7 +31,7 @@ const getDeclined = async () => {
 
 const getBuyers = async () => {
   try {
-    const response = await API.get("Admin/GetBuyers");
+    const response = await API.get("admin/buyers");
     return (response.data.map(u => new UserModel(u)));
   } catch (error) {
     console.log(error);
@@ -40,7 +40,7 @@ const getBuyers = async () => {
 
 const getOrders = async () => {
   try {
-    const response = await API.get("Admin/GetOrders");
+    const response = await API.get("admin/orders");
     return (response.data.map(o => new OrderModel(o)));
   } catch (error) {
     console.log(error);
@@ -48,7 +48,7 @@ const getOrders = async () => {
 };
 
 const verifyUser = async (verifyUserValues) => {
-  await API.post("Admin/VerifyUser", verifyUserValues);
+  await API.post("admin/verify-user", verifyUserValues);
 };
 
 // eslint-disable-next-line
