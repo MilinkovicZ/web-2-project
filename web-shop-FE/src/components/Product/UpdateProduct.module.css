@@ -8,9 +8,12 @@
 
 .title {
   font-family: "Comic Sans MS", cursive;
-  font-size: 28px;
   margin-top: 0px;
-  text-align: center;
+  font-size: 46px;
+  margin-top: 0px;
+  margin-bottom: 50px;
+  text-align: center;  
+  color: lightgoldenrodyellow;
 }
 
 .form {
