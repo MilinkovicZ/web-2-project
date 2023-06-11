@@ -12,8 +12,8 @@ using WebShop.Context;
 namespace WebShop.Migrations
 {
     [DbContext(typeof(WebShopDBContext))]
-    [Migration("20230526105724_removingLogicalDelete")]
-    partial class removingLogicalDelete
+    [Migration("20230611181716_initialMigration")]
+    partial class initialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,10 @@ namespace WebShop.Migrations
                     b.Property<double>("CurrentPrice")
                         .HasColumnType("float");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
@@ -48,8 +52,6 @@ namespace WebShop.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("Item");
                 });
@@ -84,6 +86,9 @@ namespace WebShop.Migrations
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -122,9 +127,6 @@ namespace WebShop.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.HasIndex("SellerId");
 
@@ -196,7 +198,7 @@ namespace WebShop.Migrations
                             BirthDate = new DateTime(200, 8, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "zdravkoAdmin@gmail.com",
                             FullName = "Zdravko Milinkovic",
-                            Password = "$2a$11$DW7Yrjpspo6NSfYZ7ZnIN.BDIpSaELzDnYpJ2RGgNwNAWclCJA6mO",
+                            Password = "$2a$11$MF4mH1EFFavgJOP2Asck5OB5CMcDQcgJisN1KSx787gnrSg7twm/S",
                             UserType = "Admin",
                             Username = "zdravkoAdmin",
                             VerificationState = "Accepted"
@@ -208,18 +210,10 @@ namespace WebShop.Migrations
                     b.HasOne("WebShop.Models.Order", "Order")
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("WebShop.Models.Product", "Product")
-                        .WithMany("Items")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Order");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("WebShop.Models.Order", b =>
@@ -227,7 +221,7 @@ namespace WebShop.Migrations
                     b.HasOne("WebShop.Models.User", "Buyer")
                         .WithMany("Orders")
                         .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Buyer");
@@ -238,18 +232,13 @@ namespace WebShop.Migrations
                     b.HasOne("WebShop.Models.User", "Seller")
                         .WithMany("Products")
                         .HasForeignKey("SellerId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Seller");
                 });
 
             modelBuilder.Entity("WebShop.Models.Order", b =>
-                {
-                    b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("WebShop.Models.Product", b =>
                 {
                     b.Navigation("Items");
                 });
